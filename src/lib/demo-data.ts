@@ -174,6 +174,10 @@ export interface Shipment {
   order: string;
   customer: string;
   city: string;
+  /** Endereço de entrega como vem do ATLAS/ORION. */
+  address: string;
+  /** Janela de recebimento do cliente. */
+  window: [string, string];
   weightKg: number;
   volumeM3: number;
   volumes: number;
@@ -186,13 +190,13 @@ export interface Shipment {
 
 /** Pedidos liberados pelo ORION.WMS (evento proposto shipment.ready). */
 export const SHIPMENTS: Shipment[] = [
-  { order: "PV-88231", customer: "Ribeirão Preto Agroindustrial", city: "Ribeirão Preto · SP", weightKg: 2640, volumeM3: 12.8, volumes: 18, invoiceValue: 91200, deadline: "2026-11-28", wave: "ONDA-0935", status: "ready" },
-  { order: "PV-88232", customer: "Franca Calçados Técnicos", city: "Franca · SP", weightKg: 880, volumeM3: 6.1, volumes: 7, invoiceValue: 22400, deadline: "2026-11-28", wave: "ONDA-0935", status: "ready" },
-  { order: "PV-88233", customer: "Araraquara Sucroquímica", city: "Araraquara · SP", weightKg: 3120, volumeM3: 14.0, volumes: 22, invoiceValue: 118900, deadline: "2026-11-29", wave: "ONDA-0935", status: "ready" },
-  { order: "PV-88234", customer: "São Carlos Motores", city: "São Carlos · SP", weightKg: 1460, volumeM3: 7.9, volumes: 11, invoiceValue: 64800, deadline: "2026-11-29", wave: "ONDA-0936", status: "waiting" },
-  { order: "PV-88235", customer: "Londrina Agro Peças", city: "Londrina · PR", weightKg: 4210, volumeM3: 19.6, volumes: 30, invoiceValue: 143500, deadline: "2026-12-01", wave: "ONDA-0936", status: "ready" },
-  { order: "PV-88236", customer: "Maringá Equipamentos", city: "Maringá · PR", weightKg: 2950, volumeM3: 15.2, volumes: 19, invoiceValue: 102300, deadline: "2026-12-01", wave: "ONDA-0936", status: "waiting" },
-  { order: "PV-88230", customer: "SJC Aeroparts", city: "São José dos Campos · SP", weightKg: 830, volumeM3: 4.9, volumes: 8, invoiceValue: 24100, deadline: "2026-11-27", wave: "ONDA-0934", status: "assigned", load: "CG-02422" },
+  { order: "PV-88231", customer: "Ribeirão Preto Agroindustrial", city: "Ribeirão Preto · SP", address: "Av. Presidente Kennedy, 1500, Ribeirão Preto, SP", window: ["08:00", "17:00"], weightKg: 2640, volumeM3: 12.8, volumes: 18, invoiceValue: 91200, deadline: "2026-11-28", wave: "ONDA-0935", status: "ready" },
+  { order: "PV-88232", customer: "Franca Calçados Técnicos", city: "Franca · SP", address: "Av. Dr. Ismael Alonso y Alonso, 2500, Franca, SP", window: ["08:00", "12:00"], weightKg: 880, volumeM3: 6.1, volumes: 7, invoiceValue: 22400, deadline: "2026-11-28", wave: "ONDA-0935", status: "ready" },
+  { order: "PV-88233", customer: "Araraquara Sucroquímica", city: "Araraquara · SP", address: "Av. Bento de Abreu, 1000, Araraquara, SP", window: ["13:00", "17:00"], weightKg: 3120, volumeM3: 14.0, volumes: 22, invoiceValue: 118900, deadline: "2026-11-29", wave: "ONDA-0935", status: "ready" },
+  { order: "PV-88234", customer: "São Carlos Motores", city: "São Carlos · SP", address: "Rua Episcopal, 1500, São Carlos, SP", window: ["08:00", "17:00"], weightKg: 1460, volumeM3: 7.9, volumes: 11, invoiceValue: 64800, deadline: "2026-11-29", wave: "ONDA-0936", status: "waiting" },
+  { order: "PV-88235", customer: "Londrina Agro Peças", city: "Londrina · PR", address: "Av. Tiradentes, 2000, Londrina, PR", window: ["08:00", "17:00"], weightKg: 4210, volumeM3: 19.6, volumes: 30, invoiceValue: 143500, deadline: "2026-12-01", wave: "ONDA-0936", status: "ready" },
+  { order: "PV-88236", customer: "Maringá Equipamentos", city: "Maringá · PR", address: "Av. Colombo, 5000, Maringá, PR", window: ["08:00", "12:00"], weightKg: 2950, volumeM3: 15.2, volumes: 19, invoiceValue: 102300, deadline: "2026-12-01", wave: "ONDA-0936", status: "waiting" },
+  { order: "PV-88230", customer: "SJC Aeroparts", city: "São José dos Campos · SP", address: "Av. Brigadeiro Faria Lima, 1500, São José dos Campos, SP", window: ["16:00", "18:00"], weightKg: 830, volumeM3: 4.9, volumes: 8, invoiceValue: 24100, deadline: "2026-11-27", wave: "ONDA-0934", status: "assigned", load: "CG-02422" },
 ];
 
 export interface Incident {

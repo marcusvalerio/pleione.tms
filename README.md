@@ -10,6 +10,7 @@ Gestão de transportes do ecossistema **ASTRAEUS**: o ATLAS (ERP) planeja, o ORI
 | --- | --- |
 | `/painel` | Torre de controle: cargas na rua, OTIF, janelas em risco, ocorrências, custo de frete |
 | `/embarques` | Pedidos prontos no ORION e montagem de carga com ocupação por peso e volume |
+| `/roteirizar` | Digite endereços ou traga pedidos do ORION: o sistema localiza, otimiza a sequência respeitando as janelas, traça pela estrada e prevê a chegada. Você ajusta a ordem se quiser e valida |
 | `/cargas` e `/cargas/[código]` | Lista com filtro e busca; detalhe com mapa da rota, linha de rota, veículo, ocupação e documentos |
 | `/rastreio` | Mapa da operação com todas as cargas na rua, posição do veículo, próxima parada e ocorrências |
 | `/fretes` | Simulador (frete-peso, ad valorem, GRIS, pedágio, TDE, ICMS) e tabelas vigentes |
@@ -33,6 +34,15 @@ Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4 e lucide-react, a 
 ## Referências de mercado
 
 As funcionalidades foram inspiradas em Oracle OTM, SAP TM e Blue Yonder (globais) e em TOTVS TMS, Senior TMS e ESL/Bsoft (Brasil).
+
+## Roteirização
+
+1. **Endereço → coordenada:** Nominatim (OpenStreetMap), com cache e limite de 1 requisição por segundo. Endereço achado só pela cidade aparece com aviso para conferir no mapa.
+2. **Matriz de tempos e distâncias pela estrada:** OSRM `table`.
+3. **Melhor ordem:** `src/lib/solver.ts`. Prioridade: menos atraso em relação às janelas, depois o término mais cedo, depois a menor distância. Até 8 paradas testa todas as ordens; acima disso usa vizinho mais próximo + 2-opt.
+4. **Traçado final e horários:** OSRM `route` na ordem escolhida; `src/lib/schedule.ts` soma trecho, espera de janela e tempo de descarga.
+
+API: `POST /api/roteirizacao` (`src/app/api/roteirizacao/route.ts`). `GEOCODER_URL` e `OSRM_URL` trocam os servidores públicos (só para demonstração) por instâncias próprias ou um provedor contratado.
 
 ## Mapa
 

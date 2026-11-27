@@ -14,6 +14,7 @@ import {
   Route,
   Truck,
   UserRound,
+  Waypoints,
   Workflow,
   X,
   type LucideIcon,
@@ -27,6 +28,7 @@ const NAV: { section: string; items: { label: string; href: string; icon: Lucide
     items: [
       { label: "Torre de controle", href: "/painel", icon: LayoutDashboard },
       { label: "Embarques do ORION", href: "/embarques", icon: PackageOpen },
+      { label: "Roteirizar", href: "/roteirizar", icon: Waypoints },
       { label: "Cargas", href: "/cargas", icon: Route },
       { label: "Rastreio e ocorrências", href: "/rastreio", icon: MapPinned },
     ],

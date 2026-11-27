@@ -33,8 +33,8 @@ export default function Painel() {
         description="O que está rodando, o que pode atrasar e quanto está custando o transporte hoje."
         actions={
           <>
-            <ButtonLink href="/embarques" size="sm">
-              Montar carga
+            <ButtonLink href="/roteirizar" size="sm">
+              Roteirizar entregas
             </ButtonLink>
             <ButtonLink href="/cargas?status=planned" variant="primary" size="sm">
               Despachar cargas planejadas
