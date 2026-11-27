@@ -5,7 +5,7 @@ export type StopState = "done" | "now" | "late" | "incident" | "next";
 
 const pin: Record<StopState, string> = {
   done: "bg-route border-route",
-  now: "bg-signal border-signal stop-now shadow-[0_0_0_5px_var(--signal-soft)]",
+  now: "bg-signal border-signal stop-now shadow-[0_0_0_5px_var(--accent)]",
   late: "bg-surface border-warn",
   incident: "bg-crit border-crit",
   next: "bg-surface border-line-strong",
@@ -42,7 +42,7 @@ export function RouteDots({ done, total, alert }: { done: number; total: number;
           key={i}
           className={cn(
             "size-2 rounded-[1px]",
-            i < done ? "bg-route" : i === done && alert ? "bg-signal" : "border border-line-strong",
+            i < done ? "bg-route" : i === done && alert ? "bg-warn" : "border border-line-strong",
           )}
         />
       ))}

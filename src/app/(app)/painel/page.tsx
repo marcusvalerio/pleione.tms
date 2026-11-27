@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { ArrowRight, CircleAlert, Route, TriangleAlert } from "lucide-react";
-import { Badge, ButtonLink, Card, CardBody, CardHeader, Kpi, PageHeader, StatusBadge } from "@/components/ui";
+import { Badge, ButtonLink, Card, CardBody, CardHeader, EmptyState, Kpi, PageHeader, StatusBadge } from "@/components/ui";
 import { RouteDots } from "@/components/route";
 import { getStore } from "@/server/store";
 import { brl, num } from "@/lib/format";
+import { CountUp } from "@/components/count-up";
 
 export const metadata = { title: "Torre de controle" };
 
@@ -45,14 +46,20 @@ export default async function Painel() {
       />
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-        <Kpi label="Cargas na rua" value={String(inTransit.length)} unit="cargas" hint={`${stopsOut} entregas pendentes`} />
-        <Kpi label="OTIF · 14 dias" value={num(otif)} unit="%" hint="meta 95%">
-          <Spark data={DELIVERIES_14D.map((d) => (d.ok / (d.ok + d.late)) * 100)} />
-        </Kpi>
-        <Kpi label="Janelas em risco" value={String(atRisk)} tone={atRisk ? "warning" : undefined} hint={atRisk ? <Badge tone="warning">Atenção</Badge> : "nenhuma"} />
-        <Kpi label="Ocorrências abertas" value={String(openInc.length)} tone={openInc.length ? "danger" : undefined} hint={openInc.map((i) => i.type.toLowerCase()).join(" · ")} />
-        <Kpi label="Frete / faturamento" value={num((freight / invoice) * 100)} unit="%" hint={`${brl(freight / kg)} por kg`} />
-        <Kpi label="Frota em uso" value={`${fleetBusy}/${VEHICLES.length}`} unit="veíc." hint={`${ready.length} embarques prontos no ORION`} />
+        {[
+          <Kpi key="a" label="Cargas na rua" value={<CountUp value={inTransit.length} />} unit="cargas" hint={`${stopsOut} entregas pendentes`} />,
+          <Kpi key="b" label="OTIF · 14 dias" value={<CountUp value={Number(otif.toFixed(1))} decimals={1} />} unit="%" hint="meta 95%">
+            <Spark data={DELIVERIES_14D.map((d) => (d.ok / (d.ok + d.late)) * 100)} />
+          </Kpi>,
+          <Kpi key="c" label="Janelas em risco" value={<CountUp value={atRisk} />} tone={atRisk ? "warning" : undefined} hint={atRisk ? <Badge tone="warning">Atenção</Badge> : "nenhuma"} />,
+          <Kpi key="d" label="Ocorrências abertas" value={<CountUp value={openInc.length} />} tone={openInc.length ? "danger" : undefined} hint={openInc.map((i) => i.type.toLowerCase()).join(" · ")} />,
+          <Kpi key="e" label="Frete / faturamento" value={<CountUp value={Number(((freight / invoice) * 100).toFixed(1))} decimals={1} />} unit="%" hint={`${brl(freight / kg)} por kg`} />,
+          <Kpi key="f" label="Frota em uso" value={`${fleetBusy}/${VEHICLES.length}`} unit="veíc." hint={`${ready.length} embarques prontos no ORION`} />,
+        ].map((k, i) => (
+          <div key={i} className="enter" style={{ "--i": i } as React.CSSProperties}>
+            {k}
+          </div>
+        ))}
       </div>
 
       <div className="mt-5 grid grid-cols-1 gap-5 xl:grid-cols-3">
@@ -81,7 +88,7 @@ export default async function Painel() {
                 {LOADS.map((l) => {
                   const done = l.stops.filter((s) => s.status === "delivered").length;
                   return (
-                    <tr key={l.code}>
+                    <tr key={l.code} className="enter" style={{ "--i": LOADS.indexOf(l) } as React.CSSProperties}>
                       <td>
                         <Link href={`/cargas/${l.code}`} className="code link">
                           {l.code}
@@ -149,6 +156,7 @@ export default async function Painel() {
               </Link>
             }
           />
+          {ready.length === 0 ? <EmptyState title="Nenhum pedido pronto" description="Quando o ORION conferir um pedido, ele aparece aqui para entrar numa carga." /> : null}
           <ul className="divide-y divide-line">
             {ready.map((s) => (
               <li key={s.order} className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 text-sm">
@@ -177,8 +185,8 @@ function Spark({ data }: { data: number[] }) {
   const last = pts[pts.length - 1];
   return (
     <svg viewBox={`0 0 ${w} ${h}`} className="mt-2 h-[26px] w-full" role="img" aria-label="OTIF diário nos últimos 14 dias">
-      <polyline fill="none" stroke="var(--link)" strokeWidth={1.75} points={pts.map((p) => p.join(",")).join(" ")} />
-      <rect x={last[0] - 3.5} y={last[1] - 3.5} width={7} height={7} fill="var(--signal)" />
+      <polyline fill="none" stroke="var(--series-2)" strokeWidth={1.75} points={pts.map((p) => p.join(",")).join(" ")} />
+      <rect x={last[0] - 3.5} y={last[1] - 3.5} width={7} height={7} fill="var(--transit)" />
     </svg>
   );
 }
@@ -214,8 +222,8 @@ function DeliveriesChart({ data: DELIVERIES_14D }: { data: { day: string; ok: nu
           return (
             <g key={d.day}>
               <title>{`${d.day.split("-").reverse().join("/")}: ${d.ok} no prazo, ${d.late} com atraso`}</title>
-              <rect x={x} y={base - h1} width={w} height={h1} fill={today ? "var(--link)" : "var(--fg)"} />
-              {h2 > 0 ? <rect x={x} y={base - h1 - h2 - 2} width={w} height={h2} fill="var(--signal)" /> : null}
+              <rect x={x} y={base - h1} width={w} height={h1} fill={today ? "var(--transit)" : "var(--series-1)"} />
+              {h2 > 0 ? <rect x={x} y={base - h1 - h2 - 2} width={w} height={h2} fill="var(--warn)" /> : null}
               {i % 3 === 1 ? (
                 <text x={x + w / 2} y={H - 4} fontSize={9} fill="var(--muted)" textAnchor="middle">
                   {d.day.split("-").reverse().join("/")}
@@ -230,10 +238,10 @@ function DeliveriesChart({ data: DELIVERIES_14D }: { data: { day: string; ok: nu
           <span className="size-2.5 bg-fg" /> No prazo
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="size-2.5 bg-signal" /> Com atraso
+          <span className="size-2.5 bg-warn" /> Com atraso
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="size-2.5 bg-link" /> Hoje (parcial)
+          <span className="size-2.5 bg-transit" /> Hoje (parcial)
         </span>
       </figcaption>
     </figure>

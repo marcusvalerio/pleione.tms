@@ -15,8 +15,8 @@ export function routeGeometry(code: string): RouteGeometry | null {
   return ((GEOMETRY as unknown as Record<string, RouteGeometry>)[code]) ?? null;
 }
 
-/** Cores das linhas por carga, na ordem da paleta (sem Ember, que é do veículo). */
-const LINE_COLORS = ["#3D3BE6", "#0B5A3E", "#079A2E", "#8BBE67", "#1F2826"];
+/** Cores das linhas por carga: cobalto (em trânsito) primeiro, depois as séries da paleta. */
+const LINE_COLORS = ["#2563EB", "#1D231F", "#2C8642", "#46524A", "#3FA654"];
 
 export function loadToMapRoute(load: Load, i = 0): MapRoute {
   const nextIdx = load.stops.findIndex((s) => s.status !== "delivered");

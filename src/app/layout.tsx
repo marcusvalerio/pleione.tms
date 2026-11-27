@@ -8,7 +8,7 @@ const spaceMono = Space_Mono({ subsets: ["latin"], variable: "--font-space-mono"
 
 export const metadata: Metadata = {
   title: { default: "PLEIONE TMS", template: "%s · PLEIONE TMS" },
-  description: "Gestão de transportes do ecossistema ASTRAEUS: cargas, roteiros, fretes, rastreio e entrega.",
+  description: "Gestão de transportes: cargas, roteiros, fretes, rastreio e entrega.",
 };
 
 export const viewport: Viewport = {

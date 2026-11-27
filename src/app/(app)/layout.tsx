@@ -38,9 +38,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           <span>
             <b className="font-display text-sm font-medium text-fg-2">pleione</b> tms · versão 0.2 · {source === "neon" ? "dados no Neon" : "dados em memória"}
           </span>
-          <span className="font-mono">
-            ecossistema <b className="text-fg-2">ASTRAEUS</b> · atlas · orion · pleione
-          </span>
+          <span className="font-mono">gestão de transportes</span>
         </footer>
       </div>
     </div>

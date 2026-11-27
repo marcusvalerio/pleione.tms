@@ -15,6 +15,8 @@ export interface MapRoute {
   path?: [number, number][];
   /** Índice do traçado até onde o veículo já passou (linha cheia até aqui, tracejada depois). */
   traveledTo?: number;
+  /** Desenha a linha cheia do início ao fim uma vez (rota recém-validada). */
+  draw?: boolean;
   vehicle?: { at: [number, number]; label: string };
   href?: string;
 }
@@ -67,9 +69,16 @@ export function RouteMap({ routes, height = 420, label }: { routes: MapRoute[]; 
           ahead = r.vehicle ? [r.vehicle.at, ...latlngs.slice(lastDone + 1)] : latlngs.slice(lastDone);
         }
         // contorno claro por baixo para a linha se destacar da base do mapa
-        L.polyline(r.path ?? r.points.map((p) => p.at), { color: "#FFFAF3", weight: 7, opacity: 0.75, interactive: false }).addTo(map);
+        L.polyline(r.path ?? r.points.map((p) => p.at), { color: "#FFFFFF", weight: 7, opacity: 0.75, interactive: false }).addTo(map);
         if (ahead.length > 1) L.polyline(ahead, { color: r.color, weight: 3, opacity: 0.85, dashArray: "2 7", lineCap: "square" }).addTo(map);
-        if (traveled.length > 1) L.polyline(traveled, { color: r.color, weight: 4.5, opacity: 1 }).addTo(map);
+        if (traveled.length > 1) {
+          const line = L.polyline(traveled, { color: r.color, weight: 4.5, opacity: 1 }).addTo(map);
+          const el = line.getElement();
+          if (r.draw && el) {
+            el.setAttribute("pathLength", "1");
+            el.classList.add("route-draw");
+          }
+        }
         r.path?.forEach((p) => bounds.extend(p));
 
         r.points.forEach((p, i) => {
@@ -89,7 +98,7 @@ export function RouteMap({ routes, height = 420, label }: { routes: MapRoute[]; 
         if (r.vehicle) {
           const icon = L.divIcon({
             className: "",
-            html: `<span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;background:#FF5F1F;color:#1F2826;font:700 11px var(--font-mono),monospace;padding:3px 6px;border:2px solid #1F2826;transform:translate(-50%,-50%)">▶ ${r.code}</span>`,
+            html: `<span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;background:#1D231F;color:#D7F8D9;font:700 11px var(--font-mono),monospace;padding:3px 6px;border:2px solid #D7F8D9;transform:translate(-50%,-50%)">▶ ${r.code}</span>`,
             iconSize: [0, 0],
           });
           const m = L.marker(r.vehicle.at, { icon, zIndexOffset: 1000, title: r.vehicle.label }).bindTooltip(r.vehicle.label, { direction: "top", offset: [0, -14] }).addTo(map);

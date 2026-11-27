@@ -169,7 +169,8 @@ export function Planner({ shipments }: { shipments: Shipment[] }) {
     return [
       {
         code: "rota sugerida",
-        color: "#3D3BE6",
+        color: "#2563EB",
+        draw: true,
         path: result.route.coords,
         traveledTo: result.route.coords.length - 1,
         points: [
@@ -347,7 +348,7 @@ export function Planner({ shipments }: { shipments: Shipment[] }) {
                   const t = times[k];
                   return (
                     <li key={o.stop.id} className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-3 px-4 py-2.5 text-sm">
-                      <span className="mt-0.5 flex size-5 items-center justify-center bg-link font-mono text-[11px] text-cream">{k + 1}</span>
+                      <span className="mt-0.5 flex size-5 items-center justify-center bg-fg font-mono text-[11px] text-canvas">{k + 1}</span>
                       <div className="min-w-0">
                         <p className="font-medium text-fg">{o.stop.customer}</p>
                         <p className="truncate text-xs text-muted" title={o.geo.label}>

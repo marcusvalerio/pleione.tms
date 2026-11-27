@@ -7,7 +7,7 @@ export function cn(...c: Array<string | false | null | undefined>) {
 }
 
 const tones: Record<Tone, string> = {
-  plan: "bg-signal-soft text-signal-fg",
+  plan: "bg-neutral-bg text-neutral-fg ring-1 ring-inset ring-line-strong",
   neutral: "bg-neutral-bg text-neutral-fg",
   transit: "bg-transit-bg text-transit-fg",
   warning: "bg-warn-bg text-warn-fg",
@@ -34,7 +34,7 @@ export function StatusBadge({ kind, status }: { kind: keyof typeof STATUS; statu
 type Variant = "primary" | "signal" | "secondary" | "ghost";
 const variants: Record<Variant, string> = {
   primary: "bg-action text-on-action hover:bg-action-hover",
-  signal: "bg-signal text-graphite hover:brightness-105",
+  signal: "bg-accent text-accent-fg ring-1 ring-inset ring-accent-fg/25 hover:brightness-95",
   secondary: "border border-line-strong bg-surface text-fg-2 hover:bg-subtle",
   ghost: "text-fg-2 hover:bg-subtle",
 };
@@ -88,9 +88,9 @@ export function PageHeader({ title, description, actions, eyebrow }: { title: Re
   );
 }
 
-export function Kpi({ label, value, unit, hint, tone, children }: { label: string; value: string; unit?: string; hint?: ReactNode; tone?: "warning" | "danger"; children?: ReactNode }) {
+export function Kpi({ label, value, unit, hint, tone, children }: { label: string; value: ReactNode; unit?: string; hint?: ReactNode; tone?: "warning" | "danger"; children?: ReactNode }) {
   return (
-    <div className="rounded-lg border border-line bg-surface p-3.5">
+    <div className="h-full rounded-lg border border-line bg-surface p-3.5">
       <p className="text-xs font-medium text-muted">{label}</p>
       <p className={cn("mt-1 font-display text-[32px] leading-9", tone === "warning" ? "text-warn-fg" : tone === "danger" ? "text-crit-fg" : "text-fg")}>
         {value}

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-/* PLEIONE · "Campo e sinal". Tokens oficiais — se docs/DESIGN.md e este arquivo discordarem, vale este. */
+/* PLEIONE · paleta "Grafite e menta" (origem: menta #D7F8D9 + grafite #1D231F; estrutura do ORION).
+   Se docs/DESIGN.md e este arquivo discordarem, vale este. */
 @theme {
   --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: "Gambetta", var(--font-newsreader), "Newsreader", Georgia, serif;
@@ -10,18 +11,23 @@
   --radius-md: 4px;
   --radius-lg: 6px;
 
-  /* Cores-base da marca */
-  --color-pine: #0B5A3E;
-  --color-moss: #8BBE67;
-  --color-graphite: #1F2826;
-  --color-fern: #079A2E;
-  --color-ember: #FF5F1F;
-  --color-cobalt: #3D3BE6;
-  --color-haze: #C6E6F4;
-  --color-cream: #FDEEDC;
+  /* Escalas base — componentes usam os papéis abaixo, nunca estas direto. */
+  --color-grafite-50: #F6F8F6; --color-grafite-100: #EDF1EE; --color-grafite-200: #DCE3DE; --color-grafite-300: #C3CDC6;
+  --color-grafite-400: #9FACA3; --color-grafite-500: #7A887E; --color-grafite-600: #5C6A60; --color-grafite-700: #46524A;
+  --color-grafite-800: #2E3832; --color-grafite-900: #1D231F; --color-grafite-950: #121613;
+  --color-menta-50: #F0FDF0; --color-menta-100: #D7F8D9; --color-menta-200: #B6EDBB; --color-menta-300: #8EDB97;
+  --color-menta-400: #63C473; --color-menta-500: #3FA654; --color-menta-600: #2C8642; --color-menta-700: #226A36;
+  --color-menta-800: #1C532D; --color-menta-900: #173F24; --color-menta-950: #0E2716;
+  --color-cobalto-50: #EFF4FF; --color-cobalto-100: #DBE6FE; --color-cobalto-300: #93B4FD; --color-cobalto-500: #3B6EF6;
+  --color-cobalto-600: #2563EB; --color-cobalto-700: #1D4ED8;
+  --color-ambar-100: #FFF6DB; --color-ambar-200: #FDECB8; --color-ambar-500: #E0A100; --color-ambar-800: #7A5300;
+  /* atalhos de marca usados em peças fixas (símbolo, login, landing) */
+  --color-graphite: #1D231F;
+  --color-mint: #D7F8D9;
+  --color-cream: #D7F8D9;
 }
 
-/* Papéis semânticos (mudam por tema). Use sempre estes, nunca a cor-base direto. */
+/* Papéis semânticos (mudam por tema e no modo cabine). */
 @theme inline {
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
@@ -34,9 +40,11 @@
   --color-action: var(--action);
   --color-action-hover: var(--action-hover);
   --color-on-action: var(--on-action);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
   --color-signal: var(--signal);
-  --color-signal-soft: var(--signal-soft);
-  --color-signal-fg: var(--signal-fg);
+  --color-signal-soft: var(--accent);
+  --color-signal-fg: var(--accent-fg);
   --color-link: var(--link);
   --color-focus: var(--focus);
   --color-route: var(--route);
@@ -50,47 +58,61 @@
 }
 
 :root {
-  --canvas: #FBF1E4; --surface: #FFFAF3; --subtle: #F4E8D8; --line: #EADCC8; --line-strong: #D8C6AE;
-  --fg: #1F2826; --fg-2: #3F4A47; --muted: #66716D;
-  --action: #0B5A3E; --action-hover: #0E6E4C; --on-action: #FDEEDC;
-  --signal: #FF5F1F; --signal-soft: #FFE3D4; --signal-fg: #B8400F;
-  --link: #3D3BE6; --focus: #3D3BE6; --route: #8BBE67; --chart-off: #EFE3D2;
-  --ok-bg: #DCF0DF; --ok-fg: #0A6B26; --ok: #079A2E;
-  --warn-bg: #FBEBC9; --warn-fg: #80580A; --warn: #D99A0B;
-  --crit-bg: #FFE0D3; --crit-fg: #A8340A; --crit: #FF5F1F;
-  --transit-bg: #E4E3FC; --transit-fg: #2E2CB8; --transit: #3D3BE6;
-  --info-bg: #E2F2FA; --info-fg: #1D5670;
-  --neutral-bg: #EEE6DA; --neutral-fg: #4F5955; --neutral: #8A938F;
+  --canvas: #F6F8F6; --surface: #FFFFFF; --subtle: #EDF1EE; --line: #DCE3DE; --line-strong: #C3CDC6;
+  --fg: #1D231F; --fg-2: #46524A; --muted: #5C6A60;
+  --action: #1D231F; --action-hover: #2E3832; --on-action: #D7F8D9;
+  --accent: #D7F8D9; --accent-fg: #1C532D; --signal: #1D231F;
+  --link: #226A36; --focus: #2563EB; --route: #3FA654; --chart-off: #EDF1EE;
+  --ok-bg: #E3F6E5; --ok-fg: #1C532D; --ok: #2C8642;
+  --warn-bg: #FFF6DB; --warn-fg: #7A5300; --warn: #E0A100;
+  --crit-bg: #FDECEC; --crit-fg: #A3202A; --crit: #E03A45;
+  --transit-bg: #EFF4FF; --transit-fg: #1D4ED8; --transit: #2563EB;
+  --info-bg: #F1F7FE; --info-fg: #1E4C82;
+  --neutral-bg: #EDF1EE; --neutral-fg: #46524A; --neutral: #7A887E;
+  --series-1: #1D231F; --series-2: #2C8642; --series-3: #8EDB97; --series-4: #3B6EF6; --series-5: #9FACA3; --series-6: #173F24;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --canvas: #161D1B; --surface: #1F2826; --subtle: #27322F; --line: #2F3B38; --line-strong: #3F4D49;
-    --fg: #FDEEDC; --fg-2: #D3CABC; --muted: #9FA8A3;
-    --action: #8BBE67; --action-hover: #A0CC80; --on-action: #1F2826;
-    --signal: #FF7A45; --signal-soft: #3E2216; --signal-fg: #FFAE8A;
-    --link: #A9A8FA; --focus: #A9A8FA; --route: #8BBE67; --chart-off: #2F3B38;
-    --ok-bg: #12331C; --ok-fg: #8BDB98; --ok: #3CC25A;
-    --warn-bg: #3A2D0E; --warn-fg: #F3CE72; --warn: #E9B53A;
-    --crit-bg: #3E2216; --crit-fg: #FFAE8A; --crit: #FF7A45;
-    --transit-bg: #25244F; --transit-fg: #B5B4FA; --transit: #8E8CF7;
-    --info-bg: #17323F; --info-fg: #C6E6F4;
-    --neutral-bg: #2A3431; --neutral-fg: #D3CABC; --neutral: #9FA8A3;
+    --canvas: #121613; --surface: #1D231F; --subtle: #262E29; --line: #2E3832; --line-strong: #46524A;
+    --fg: #EEF4EF; --fg-2: #C3CDC6; --muted: #9FACA3;
+    --action: #D7F8D9; --action-hover: #B6EDBB; --on-action: #1D231F;
+    --accent: #1F3A27; --accent-fg: #B6EDBB; --signal: #D7F8D9;
+    --link: #8EDB97; --focus: #93B4FD; --route: #63C473; --chart-off: #262E29;
+    --ok-bg: #163220; --ok-fg: #B6EDBB; --ok: #63C473;
+    --warn-bg: #3A2C05; --warn-fg: #F8D57A; --warn: #E9B53A;
+    --crit-bg: #3D0F15; --crit-fg: #FFA3A9; --crit: #F2545E;
+    --transit-bg: #111C4A; --transit-fg: #A9C1FF; --transit: #6090FA;
+    --info-bg: #0D2445; --info-fg: #9DC7F4;
+    --neutral-bg: #262E29; --neutral-fg: #C3CDC6; --neutral: #9FACA3;
+    --series-1: #D7F8D9; --series-2: #63C473; --series-3: #2C8642; --series-4: #93B4FD; --series-5: #7A887E; --series-6: #B6EDBB;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --canvas: #161D1B; --surface: #1F2826; --subtle: #27322F; --line: #2F3B38; --line-strong: #3F4D49;
-  --fg: #FDEEDC; --fg-2: #D3CABC; --muted: #9FA8A3;
-  --action: #8BBE67; --action-hover: #A0CC80; --on-action: #1F2826;
-  --signal: #FF7A45; --signal-soft: #3E2216; --signal-fg: #FFAE8A;
-  --link: #A9A8FA; --focus: #A9A8FA; --route: #8BBE67; --chart-off: #2F3B38;
-  --ok-bg: #12331C; --ok-fg: #8BDB98; --ok: #3CC25A;
-  --warn-bg: #3A2D0E; --warn-fg: #F3CE72; --warn: #E9B53A;
-  --crit-bg: #3E2216; --crit-fg: #FFAE8A; --crit: #FF7A45;
-  --transit-bg: #25244F; --transit-fg: #B5B4FA; --transit: #8E8CF7;
-  --info-bg: #17323F; --info-fg: #C6E6F4;
-  --neutral-bg: #2A3431; --neutral-fg: #D3CABC; --neutral: #9FA8A3;
+  --canvas: #121613; --surface: #1D231F; --subtle: #262E29; --line: #2E3832; --line-strong: #46524A;
+  --fg: #EEF4EF; --fg-2: #C3CDC6; --muted: #9FACA3;
+  --action: #D7F8D9; --action-hover: #B6EDBB; --on-action: #1D231F;
+  --accent: #1F3A27; --accent-fg: #B6EDBB; --signal: #D7F8D9;
+  --link: #8EDB97; --focus: #93B4FD; --route: #63C473; --chart-off: #262E29;
+  --ok-bg: #163220; --ok-fg: #B6EDBB; --ok: #63C473;
+  --warn-bg: #3A2C05; --warn-fg: #F8D57A; --warn: #E9B53A;
+  --crit-bg: #3D0F15; --crit-fg: #FFA3A9; --crit: #F2545E;
+  --transit-bg: #111C4A; --transit-fg: #A9C1FF; --transit: #6090FA;
+  --info-bg: #0D2445; --info-fg: #9DC7F4;
+  --neutral-bg: #262E29; --neutral-fg: #C3CDC6; --neutral: #9FACA3;
+  --series-1: #D7F8D9; --series-2: #63C473; --series-3: #2C8642; --series-4: #93B4FD; --series-5: #7A887E; --series-6: #B6EDBB;
   color-scheme: dark;
+}
+/* Modo cabine: app do motorista à noite (equivalente ao modo inventário do ORION). */
+[data-mode="cabine"] {
+  --canvas: #0B0E0C; --surface: #161B17; --subtle: #1D231F; --line: #26302A; --line-strong: #2E3832;
+  --fg: #D7F8D9; --fg-2: #B6EDBB; --muted: #8EDB97;
+  --action: #D7F8D9; --action-hover: #B6EDBB; --on-action: #1D231F;
+  --accent: #1F3A27; --accent-fg: #D7F8D9; --signal: #D7F8D9;
+  --link: #B6EDBB; --focus: #FDECB8;
+  color-scheme: dark;
+  background-color: var(--canvas);
+  color: var(--fg);
 }
 
 @layer base {
@@ -113,7 +135,7 @@
     inset: 0;
     pointer-events: none;
     z-index: 60;
-    opacity: 0.06;
+    opacity: 0.035;
     mix-blend-mode: multiply;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
@@ -135,9 +157,30 @@
   .link { @apply font-medium text-link hover:underline; }
 }
 
+/* -----------------------------------------------------------------------------
+ * Movimento (tempos e curva do ORION). Tudo para com prefers-reduced-motion.
+ * -------------------------------------------------------------------------- */
+:root { --ease: cubic-bezier(.2,.7,.2,1); }
 @keyframes pleione-pulse { 50% { box-shadow: 0 0 0 9px transparent; } }
+@keyframes pleione-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes pleione-ray { from { opacity: 0; transform: scale(.25); } to { opacity: 1; transform: none; } }
+@keyframes pleione-wave { 0%, 40%, 100% { transform: none; opacity: 1; } 18% { transform: scale(.55); opacity: .35; } }
+@keyframes pleione-breathe { 0%, 100% { transform: none; } 50% { transform: scale(.92); } }
+@keyframes pleione-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes pleione-pop { 50% { transform: scale(1.08); } }
+.mark-ray { transform-box: view-box; transform-origin: 0 0; }
 @media (prefers-reduced-motion: no-preference) {
   .stop-now { animation: pleione-pulse 2s ease-in-out infinite; }
+  /* entrada de cartões e linhas, em cascata (+60 ms; defina --i no elemento) */
+  .enter { animation: pleione-in 240ms var(--ease) both; animation-delay: calc(min(var(--i, 0), 8) * 60ms); }
+  /* abertura do símbolo: raios crescem do centro, 40 ms um depois do outro */
+  .mark-reveal .mark-ray { animation: pleione-ray 560ms var(--ease) both; animation-delay: calc(var(--k) * 40ms); }
+  /* carregando: onda percorre os raios (volta de 1,6 s); a forma não gira */
+  .mark-loading .mark-ray { animation: pleione-wave 1.6s ease-in-out infinite; animation-delay: calc(var(--k) * 76ms); }
+  /* respiro: só login e landing */
+  .mark-breathe .mark-ray { animation: pleione-breathe 6s ease-in-out infinite; animation-delay: calc(var(--k) * -857ms); }
+  .route-draw { stroke-dasharray: 1; animation: pleione-draw 2.4s var(--ease) both; }
+  .pop { animation: pleione-pop 300ms var(--ease); }
 }
 
 /* Mapa: controles e balões no estilo da marca. */

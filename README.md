@@ -1,6 +1,6 @@
 # PLEIONE TMS
 
-Gestão de transportes do ecossistema **ASTRAEUS**: o ATLAS (ERP) planeja, o ORION (WMS) separa e o PLEIONE (TMS) leva até o cliente.
+Gestão de transportes: cargas, roteirização pela estrada, frete, rastreio e entrega. Integra com ERP e WMS (ATLAS e ORION) por eventos.
 
 > Versão 0.2. Os dados ficam no **Neon** (Postgres, projeto `pleione-tms`, região São Paulo). Sem `DATABASE_URL`, o app usa os dados de demonstração em memória (`src/lib/demo-data.ts`). Ainda não há login nem integração com o ORION ligada.
 

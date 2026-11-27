@@ -5,7 +5,7 @@ import { Monitor, Moon, Sun } from "lucide-react";
 import { cn } from "./ui";
 
 type Pref = "light" | "dark" | "system";
-const KEY = "astraeus-theme";
+const KEY = "pleione-theme";
 const OPTIONS: { value: Pref; label: string; Icon: typeof Sun }[] = [
   { value: "light", label: "Claro", Icon: Sun },
   { value: "dark", label: "Escuro", Icon: Moon },
@@ -18,7 +18,7 @@ function apply(v: Pref) {
   else root.setAttribute("data-theme", v);
 }
 
-/** Tema claro/escuro/sistema, lembrado no navegador (mesma chave do ecossistema ASTRAEUS). */
+/** Tema claro/escuro/sistema, lembrado no navegador. */
 export function ThemeSwitcher() {
   const [pref, setPref] = useState<Pref>("system");
   useEffect(() => {

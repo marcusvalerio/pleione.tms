@@ -16,7 +16,7 @@ export default function Integracao() {
   return (
     <>
       <PageHeader
-        eyebrow="ecossistema astraeus"
+        eyebrow="integrações"
         title={
           <>
             O ERP planeja, o WMS separa, <em>o TMS leva</em>
@@ -28,11 +28,11 @@ export default function Integracao() {
         {[
           { n: "atlas", r: "ERP · MRP", d: "Cadastros, pedidos de venda, fiscal (NF-e, CT-e) e custos.", c: "#DDB54C" },
           { n: "orion", r: "WMS", d: "Separação, conferência, volumes e agenda de docas.", c: "#7DB7F0" },
-          { n: "pleione", r: "TMS", d: "Cargas, roteiros, transportadoras, frete, rastreio e entrega.", c: "#FF5F1F" },
+          { n: "pleione", r: "TMS", d: "Cargas, roteiros, transportadoras, frete, rastreio e entrega.", c: "#D7F8D9" },
         ].map((s) => (
           <Card key={s.n} className="p-4">
             <div className="flex items-center gap-2">
-              <span className="size-3" style={{ background: s.c }} />
+              <span className="size-3 ring-1 ring-line-strong" style={{ background: s.c }} />
               <span className="font-display text-xl text-fg">{s.n}</span>
               <span className="eyebrow">{s.r}</span>
             </div>

@@ -69,7 +69,7 @@ export function Sidebar() {
                     onClick={() => setOpen(false)}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "flex items-center gap-2.5 border-l-[3px] px-2 py-1.5 text-sm transition-colors",
+                      "flex items-center gap-2.5 border-l-[3px] px-2 py-1.5 text-sm transition-[background-color,color,border-color] duration-200 ease-[cubic-bezier(.2,.7,.2,1)]",
                       active ? "border-signal bg-signal-soft font-semibold text-signal-fg" : "border-transparent text-fg-2 hover:bg-subtle hover:text-fg",
                     )}
                   >
