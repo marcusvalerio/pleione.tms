@@ -10,8 +10,8 @@ Gestão de transportes do ecossistema **ASTRAEUS**: o ATLAS (ERP) planeja, o ORI
 | --- | --- |
 | `/painel` | Torre de controle: cargas na rua, OTIF, janelas em risco, ocorrências, custo de frete |
 | `/embarques` | Pedidos prontos no ORION e montagem de carga com ocupação por peso e volume |
-| `/cargas` e `/cargas/[código]` | Lista com filtro e busca; detalhe com linha de rota, veículo, ocupação e documentos |
-| `/rastreio` | Próxima parada de cada carga e ocorrências |
+| `/cargas` e `/cargas/[código]` | Lista com filtro e busca; detalhe com mapa da rota, linha de rota, veículo, ocupação e documentos |
+| `/rastreio` | Mapa da operação com todas as cargas na rua, posição do veículo, próxima parada e ocorrências |
 | `/fretes` | Simulador (frete-peso, ad valorem, GRIS, pedágio, TDE, ICMS) e tabelas vigentes |
 | `/transportadoras`, `/frota`, `/motoristas` | Cadastros |
 | `/integracao` | Contrato de eventos proposto com ATLAS e ORION |
@@ -33,3 +33,7 @@ Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4 e lucide-react, a 
 ## Referências de mercado
 
 As funcionalidades foram inspiradas em Oracle OTM, SAP TM e Blue Yonder (globais) e em TOTVS TMS, Senior TMS e ESL/Bsoft (Brasil).
+
+## Mapa
+
+Leaflet sobre a base do OpenStreetMap, com filtro de cor no tom da marca (e invertido no tema escuro). As linhas ligam as paradas em sequência, em linha reta: o traçado pela estrada chega com o motor de roteirização. Para produção com volume, troque o servidor de mapas público por um provedor com chave (a política de uso do `tile.openstreetmap.org` não cobre tráfego alto).

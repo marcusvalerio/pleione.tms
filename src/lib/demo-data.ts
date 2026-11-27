@@ -230,3 +230,39 @@ export const carrierName = (id: string) => CARRIERS.find((c) => c.id === id)?.na
 export const driverById = (id: string | null) => DRIVERS.find((d) => d.id === id) ?? null;
 export const vehicleByPlate = (p: string | null) => VEHICLES.find((v) => v.plate === p) ?? null;
 export const loadByCode = (code: string) => LOADS.find((l) => l.code === code) ?? null;
+
+/** Coordenadas (lat, lng) das cidades das paradas. Na fase com banco, vem da geocodificação do endereço. */
+export const ORIGIN_COORDS: [number, number] = [-23.4538, -46.5333]; // CD Guarulhos
+export const CITY_COORDS: Record<string, [number, number]> = {
+  "Sorocaba · SP": [-23.5015, -47.4526],
+  "Itapetininga · SP": [-23.5917, -48.0531],
+  "Registro · SP": [-24.4971, -47.8449],
+  "Curitiba · PR": [-25.4284, -49.2733],
+  "Joinville · SC": [-26.3045, -48.8487],
+  "Caxias do Sul · RS": [-29.1678, -51.1794],
+  "Porto Alegre · RS": [-30.0346, -51.2177],
+  "Atibaia · SP": [-23.1171, -46.5563],
+  "Campo Largo · PR": [-25.4594, -49.5276],
+  "Pinhais · PR": [-25.4446, -49.1926],
+  "São José dos Pinhais · PR": [-25.5313, -49.2031],
+  "Jundiaí · SP": [-23.1857, -46.8978],
+  "Valinhos · SP": [-22.9708, -46.9958],
+  "Campinas · SP": [-22.9099, -47.0626],
+  "Hortolândia · SP": [-22.8529, -47.2143],
+  "Sumaré · SP": [-22.8204, -47.2728],
+  "Paulínia · SP": [-22.7542, -47.1488],
+  "Pouso Alegre · MG": [-22.2266, -45.9389],
+  "Lavras · MG": [-21.2453, -44.9997],
+  "Contagem · MG": [-19.9321, -44.0539],
+  "Belo Horizonte · MG": [-19.9167, -43.9345],
+  "Jacareí · SP": [-23.3053, -45.9658],
+  "São José dos Campos · SP": [-23.1896, -45.8841],
+  "Caçapava · SP": [-23.1003, -45.7077],
+};
+
+/** Última posição do veículo (rastreador / app do motorista) das cargas na rua. */
+export const VEHICLE_POSITIONS: Record<string, { at: [number, number]; when: string; speed: number }> = {
+  "CG-02418": { at: [-25.0951, -48.8925], when: "14:42", speed: 78 },
+  "CG-02419": { at: [-25.4655, -49.3870], when: "14:40", speed: 12 },
+  "CG-02421": { at: [-22.2266, -45.9389], when: "14:38", speed: 0 },
+};

@@ -139,3 +139,16 @@
 @media (prefers-reduced-motion: no-preference) {
   .stop-now { animation: pleione-pulse 2s ease-in-out infinite; }
 }
+
+/* Mapa: controles e balões no estilo da marca. */
+.pleione-map .leaflet-bar a { border-radius: 0 !important; background: var(--surface); color: var(--fg); border-color: var(--line); }
+.pleione-map .leaflet-control-attribution { background: color-mix(in oklab, var(--surface) 85%, transparent); color: var(--muted); font-size: 10px; }
+.pleione-map .leaflet-control-attribution a { color: var(--link); }
+.pleione-map .leaflet-tooltip { border-radius: 2px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--fg); box-shadow: none; font-family: var(--font-sans); }
+.pleione-map .leaflet-tooltip-top::before { border-top-color: var(--line-strong); }
+/* Base do mapa no tom da marca: dessaturada e aquecida; no escuro, invertida. */
+.pleione-map .leaflet-tile-pane { filter: grayscale(0.85) sepia(0.18) brightness(1.03) contrast(0.92); }
+:root[data-theme="dark"] .pleione-map .leaflet-tile-pane { filter: grayscale(1) invert(0.92) hue-rotate(180deg) brightness(0.85) contrast(0.9); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .pleione-map .leaflet-tile-pane { filter: grayscale(1) invert(0.92) hue-rotate(180deg) brightness(0.85) contrast(0.9); }
+}

@@ -3,6 +3,8 @@ import { Badge, ButtonLink, Capacity, Card, CardBody, CardHeader, PageHeader, Pl
 import { RouteLine, RouteStop, type StopState } from "@/components/route";
 import { INCIDENTS, LOADS, carrierName, driverById, loadByCode, vehicleByPlate } from "@/lib/demo-data";
 import { brl, fmtDate, num } from "@/lib/format";
+import { RouteMap } from "@/components/map/route-map";
+import { loadToMapRoute } from "@/lib/map-routes";
 
 export function generateStaticParams() {
   return LOADS.map((l) => ({ code: l.code }));
@@ -45,6 +47,13 @@ export default async function Carga({ params }: { params: Promise<{ code: string
           </>
         }
       />
+
+      <Card className="mb-5">
+        <CardHeader title="Mapa da rota" description="Linha cheia: trecho percorrido. Tracejada: o que falta. As paradas seguem a sequência da carga." />
+        <CardBody>
+          <RouteMap routes={[loadToMapRoute(load)]} height={360} label={`Mapa da rota da carga ${load.code}`} />
+        </CardBody>
+      </Card>
 
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
         <Card>
