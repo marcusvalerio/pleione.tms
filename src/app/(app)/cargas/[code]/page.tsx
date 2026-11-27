@@ -4,7 +4,7 @@ import { RouteLine, RouteStop, type StopState } from "@/components/route";
 import { INCIDENTS, LOADS, carrierName, driverById, loadByCode, vehicleByPlate } from "@/lib/demo-data";
 import { brl, fmtDate, num } from "@/lib/format";
 import { RouteMap } from "@/components/map/route-map";
-import { loadToMapRoute } from "@/lib/map-routes";
+import { loadToMapRoute, routeGeometry } from "@/lib/map-routes";
 
 export function generateStaticParams() {
   return LOADS.map((l) => ({ code: l.code }));
@@ -25,13 +25,16 @@ export default async function Carga({ params }: { params: Promise<{ code: string
   const nextIdx = load.stops.findIndex((s) => s.status !== "delivered");
   const incidents = INCIDENTS.filter((i) => i.load === load.code);
   const insuranceLimit = 450000;
+  const geo = routeGeometry(load.code);
+  const km = geo?.km ?? load.km;
+  const hm = (min: number) => `${Math.floor(min / 60)}h${String(min % 60).padStart(2, "0")}`;
 
   return (
     <>
       <PageHeader
         eyebrow={`cargas / ${load.code}`}
         title={<span className="font-mono text-2xl tracking-normal">{load.code}</span>}
-        description={`${load.origin} → ${load.destination} · ${num(load.km)} km · saída ${load.departure} · ${carrierName(load.carrierId)}`}
+        description={`${load.origin} → ${load.destination} · ${num(km)} km pela estrada · saída ${load.departure} · ${carrierName(load.carrierId)}`}
         actions={
           <>
             <StatusBadge kind="load" status={load.status} />
@@ -49,7 +52,11 @@ export default async function Carga({ params }: { params: Promise<{ code: string
       />
 
       <Card className="mb-5">
-        <CardHeader title="Mapa da rota" description="Linha cheia: trecho percorrido. Tracejada: o que falta. As paradas seguem a sequência da carga." />
+        <CardHeader
+          title="Mapa da rota"
+          description="Traçado pela estrada. Linha cheia: trecho percorrido. Pontilhada: o que falta."
+          actions={geo ? <span className="font-mono text-xs text-fg-2">{num(geo.km)} km · {hm(geo.min)} ao volante</span> : null}
+        />
         <CardBody>
           <RouteMap routes={[loadToMapRoute(load)]} height={360} label={`Mapa da rota da carga ${load.code}`} />
         </CardBody>
@@ -71,6 +78,12 @@ export default async function Carga({ params }: { params: Promise<{ code: string
                     <>
                       {s.city} · {s.address}
                       <br />
+                      {geo?.legs[i] ? (
+                        <span className="font-mono text-[11px] text-fg-2">
+                          +{num(geo.legs[i].km)} km · {hm(geo.legs[i].min)} desde a parada anterior
+                          <br />
+                        </span>
+                      ) : null}
                       Janela {s.window} · NF <span className="code">{s.invoice}</span> · {s.volumes} vol. · {num(s.weightKg)} kg
                       {s.note ? <span className="block text-fg-2">{s.note}</span> : null}
                     </>

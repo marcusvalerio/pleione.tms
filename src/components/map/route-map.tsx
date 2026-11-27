@@ -11,6 +11,10 @@ export interface MapRoute {
   /** Cor da linha (token CSS ou hex). */
   color: string;
   points: { at: [number, number]; label: string; state: MapPointState }[];
+  /** Traçado pela estrada. Sem ele, as paradas são ligadas em linha reta. */
+  path?: [number, number][];
+  /** Índice do traçado até onde o veículo já passou (linha cheia até aqui, tracejada depois). */
+  traveledTo?: number;
   vehicle?: { at: [number, number]; label: string };
   href?: string;
 }
@@ -50,13 +54,23 @@ export function RouteMap({ routes, height = 420, label }: { routes: MapRoute[]; 
 
       const bounds = L.latLngBounds([]);
       for (const r of routes) {
-        const latlngs = r.points.map((p) => p.at);
-        // trecho já percorrido sólido; o restante tracejado
-        const lastDone = r.points.reduce((idx, p, i) => (p.state === "done" || p.state === "origin" ? i : idx), 0);
-        const traveled = r.vehicle ? [...latlngs.slice(0, lastDone + 1), r.vehicle.at] : latlngs.slice(0, lastDone + 1);
-        const ahead = r.vehicle ? [r.vehicle.at, ...latlngs.slice(lastDone + 1)] : latlngs.slice(lastDone);
-        L.polyline(traveled, { color: r.color, weight: 4, opacity: 0.95 }).addTo(map);
-        L.polyline(ahead, { color: r.color, weight: 2.5, opacity: 0.8, dashArray: "6 7" }).addTo(map);
+        let traveled: [number, number][];
+        let ahead: [number, number][];
+        if (r.path?.length) {
+          const cut = Math.min(r.path.length - 1, Math.max(0, r.traveledTo ?? 0));
+          traveled = r.path.slice(0, cut + 1);
+          ahead = r.path.slice(cut);
+        } else {
+          const latlngs = r.points.map((p) => p.at);
+          const lastDone = r.points.reduce((idx, p, i) => (p.state === "done" || p.state === "origin" ? i : idx), 0);
+          traveled = r.vehicle ? [...latlngs.slice(0, lastDone + 1), r.vehicle.at] : latlngs.slice(0, lastDone + 1);
+          ahead = r.vehicle ? [r.vehicle.at, ...latlngs.slice(lastDone + 1)] : latlngs.slice(lastDone);
+        }
+        // contorno claro por baixo para a linha se destacar da base do mapa
+        L.polyline(r.path ?? r.points.map((p) => p.at), { color: "#FFFAF3", weight: 7, opacity: 0.75, interactive: false }).addTo(map);
+        if (ahead.length > 1) L.polyline(ahead, { color: r.color, weight: 3, opacity: 0.85, dashArray: "2 7", lineCap: "square" }).addTo(map);
+        if (traveled.length > 1) L.polyline(traveled, { color: r.color, weight: 4.5, opacity: 1 }).addTo(map);
+        r.path?.forEach((p) => bounds.extend(p));
 
         r.points.forEach((p, i) => {
           const s = PIN[p.state];

@@ -36,4 +36,14 @@ As funcionalidades foram inspiradas em Oracle OTM, SAP TM e Blue Yonder (globais
 
 ## Mapa
 
-Leaflet sobre a base do OpenStreetMap, com filtro de cor no tom da marca (e invertido no tema escuro). As linhas ligam as paradas em sequência, em linha reta: o traçado pela estrada chega com o motor de roteirização. Para produção com volume, troque o servidor de mapas público por um provedor com chave (a política de uso do `tile.openstreetmap.org` não cobre tráfego alto).
+Leaflet sobre a base do OpenStreetMap, com filtro de cor no tom da marca (e invertido no tema escuro).
+
+O traçado de cada carga segue a estrada: vem do OSRM (motor de rotas aberto, dados do OpenStreetMap), simplificado com tolerância de ~10 m e gravado em `src/lib/route-geometry.json`, junto com a distância e o tempo de cada trecho. O caminhão é posicionado sobre o traçado (trecho atual + percentual percorrido), então fica sempre na rodovia.
+
+Para gerar de novo depois de mudar paradas ou coordenadas:
+
+```bash
+npx tsx scripts/routes.ts
+```
+
+`OSRM_URL` aponta para outro servidor OSRM (o público é só para demonstração). Em produção: OSRM próprio ou um provedor com chave, e o mesmo cálculo roda no servidor ao criar a carga. A base de mapa pública (`tile.openstreetmap.org`) também deve ser trocada por um provedor com chave quando houver volume.

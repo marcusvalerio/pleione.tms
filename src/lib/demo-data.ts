@@ -260,9 +260,13 @@ export const CITY_COORDS: Record<string, [number, number]> = {
   "Caçapava · SP": [-23.1003, -45.7077],
 };
 
-/** Última posição do veículo (rastreador / app do motorista) das cargas na rua. */
-export const VEHICLE_POSITIONS: Record<string, { at: [number, number]; when: string; speed: number }> = {
-  "CG-02418": { at: [-25.0951, -48.8925], when: "14:42", speed: 78 },
-  "CG-02419": { at: [-25.4655, -49.3870], when: "14:40", speed: 12 },
-  "CG-02421": { at: [-22.2266, -45.9389], when: "14:38", speed: 0 },
+/**
+ * Última posição do veículo (rastreador / app do motorista) das cargas na rua: em que trecho
+ * da rota ele está (0 = do CD até a parada 1) e quanto desse trecho já percorreu.
+ * A coordenada exata sai do traçado pela estrada, então o caminhão fica sempre sobre a rodovia.
+ */
+export const VEHICLE_POSITIONS: Record<string, { leg: number; progress: number; when: string; speed: number }> = {
+  "CG-02418": { leg: 3, progress: 0.62, when: "14:42", speed: 78 },
+  "CG-02419": { leg: 2, progress: 0.86, when: "14:40", speed: 12 },
+  "CG-02421": { leg: 0, progress: 1, when: "14:38", speed: 0 },
 };

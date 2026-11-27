@@ -4,6 +4,7 @@ import { RouteDots } from "@/components/route";
 import { LOADS, carrierName, driverById } from "@/lib/demo-data";
 import { STATUS } from "@/lib/labels";
 import { brl, num } from "@/lib/format";
+import { routeGeometry } from "@/lib/map-routes";
 
 export const metadata = { title: "Cargas" };
 
@@ -76,7 +77,7 @@ export default async function Cargas({ searchParams }: { searchParams: Promise<{
                     <td>
                       <span className="text-fg">{l.destination}</span>
                       <span className="block text-xs text-muted">
-                        {num(l.km)} km · saída {l.departure} · doca {l.dock}
+                        {num(routeGeometry(l.code)?.km ?? l.km)} km · saída {l.departure} · doca {l.dock}
                       </span>
                     </td>
                     <td className="code">{l.vehiclePlate ?? "—"}</td>
