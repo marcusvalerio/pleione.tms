@@ -2,7 +2,7 @@
 
 Gestão de transportes: cargas, roteirização pela estrada, frete, rastreio e entrega. Integra com ERP e WMS (ATLAS e ORION) por eventos.
 
-> Versão 0.2. Os dados ficam no **Neon** (Postgres, projeto `pleione-tms`, região São Paulo). Sem `DATABASE_URL`, o app usa os dados de demonstração em memória (`src/lib/demo-data.ts`). Ainda não há login nem integração com o ORION ligada.
+> Versão 0.2. Os dados ficam no **Neon** (Postgres, projeto `pleione-tms`, região São Paulo). Sem `DATABASE_URL`, o app usa os dados de demonstração em memória (`src/lib/demo-data.ts`). Login com e-mail e senha (mesmo modelo do ORION); a integração com o ORION ainda não está ligada.
 
 ## Telas
 
@@ -27,6 +27,19 @@ npm run db:migrate           # aplica db/migrations/*.sql
 npm run db:seed              # dados de demonstração (só se o banco estiver vazio)
 npm run dev
 ```
+
+## Acesso
+
+Mesmo modelo do ORION: senha com scrypt, sessão em cookie `pleione_session` assinado com HMAC (12 horas), usuário recarregado do banco a cada requisição, trilha em `tms.audit_log` e troca obrigatória de senha temporária (`/trocar-senha`).
+
+| Perfil | E-mail (senha `pleione-demo`) |
+| --- | --- |
+| Administrador | `admin@metalsupply.demo` |
+| Coordenador de transportes | `coordenacao@metalsupply.demo` |
+| Programador de cargas | `programacao@metalsupply.demo` |
+| Auditor (consulta) | `auditoria@metalsupply.demo` |
+
+A tela de login tem atalhos que preenchem cada perfil. **Não use estes usuários em produção.** Permissões em `src/lib/permissions.ts`; as rotas `POST /api/cargas` e `/api/roteirizacao` recusam quem não tem permissão (o auditor só consulta). Sem `DATABASE_URL`, o app abre em modo demonstração, como administradora, sem login.
 
 ## Banco (Neon)
 

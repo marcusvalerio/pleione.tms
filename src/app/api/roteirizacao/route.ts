@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { authorizeApi } from "@/server/auth/session";
 import { ORIGIN_COORDS } from "@/lib/demo-data";
 import { geocode, optimize, routeInOrder } from "@/server/routing";
 
@@ -28,6 +29,8 @@ const Body = z.object({
  * ordem em que as paradas foram informadas, para mostrar o ganho da otimização.
  */
 export async function POST(req: Request) {
+  const auth = await authorizeApi("route.plan");
+  if (auth instanceof Response) return auth;
   const parsed = Body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: "Informe de 1 a 25 paradas com endereço." }, { status: 400 });
   const { mode, stops, departure } = parsed.data;

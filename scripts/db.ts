@@ -19,6 +19,7 @@ import {
   VEHICLE_POSITIONS,
 } from "../src/lib/demo-data";
 import GEOMETRY from "../src/lib/route-geometry.json";
+import { hashPassword } from "../src/server/auth/password";
 
 const url = process.env.DATABASE_URL;
 if (!url) throw new Error("Defina DATABASE_URL (ex.: no .env.local).");
@@ -46,9 +47,33 @@ async function migrate() {
   }
 }
 
+/** Empresa e usuários de demonstração (um por perfil). Senha de todos: pleione-demo. */
+async function seedAuth() {
+  const { rows } = await pool.query("select count(*)::int as n from tms.companies");
+  if (rows[0].n > 0) return console.log("usuários já existem; seed de acesso ignorado");
+  const hash = await hashPassword("pleione-demo");
+  const [{ id }] = (
+    await pool.query("insert into tms.companies (name, legal_name, document, is_demo) values ($1, $2, $3, true) returning id", [
+      "MetalSupply Componentes",
+      "MetalSupply Componentes Industriais Ltda.",
+      "12345678000190",
+    ])
+  ).rows;
+  const users: [string, string, string][] = [
+    ["Renata Alves", "admin@metalsupply.demo", "admin"],
+    ["Carla Mendes", "coordenacao@metalsupply.demo", "coordinator"],
+    ["Diego Ramos", "programacao@metalsupply.demo", "planner"],
+    ["Sofia Lima", "auditoria@metalsupply.demo", "auditor"],
+  ];
+  for (const [name, email, role] of users)
+    await pool.query("insert into tms.users (company_id, name, email, role, password_hash, is_demo) values ($1, $2, $3, $4, $5, true)", [id, name, email, role, hash]);
+  console.log("usuários de demonstração criados (senha: pleione-demo)");
+}
+
 async function seed() {
+  await seedAuth();
   const { rows } = await pool.query("select count(*)::int as n from tms.carriers");
-  if (rows[0].n > 0) return console.log("banco já tem dados; seed ignorado");
+  if (rows[0].n > 0) return console.log("banco já tem dados operacionais; seed ignorado");
   const client = await pool.connect();
   const q = (text: string, values: unknown[]) => client.query(text, values);
   try {

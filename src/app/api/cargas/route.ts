@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { authorizeApi } from "@/server/auth/session";
 import { ORIGIN_COORDS } from "@/lib/demo-data";
 import { db } from "@/server/db";
 import { geocode, optimize, routeInOrder } from "@/server/routing";
@@ -36,6 +37,8 @@ function cityOf(address: string) {
  * verdade), grava carga, paradas e traçado, e marca os pedidos do ORION como "em carga".
  */
 export async function POST(req: Request) {
+  const auth = await authorizeApi("load.create");
+  if (auth instanceof Response) return auth;
   const sql = db();
   if (!sql) return Response.json({ error: "Banco não configurado (DATABASE_URL)." }, { status: 503 });
   const parsed = Body.safeParse(await req.json().catch(() => null));
