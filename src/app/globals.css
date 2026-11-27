@@ -1,80 +1,27 @@
 @import "tailwindcss";
 
-/* Identidade visual "Céu de inverno". */
+/* PLEIONE · "Campo e sinal". Tokens oficiais — se docs/DESIGN.md e este arquivo discordarem, vale este. */
 @theme {
-  /* Textos: Inter · títulos e logo: Gabarito · códigos (endereço, SKU, lote, documento): Geist Mono */
-  --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  --font-display: var(--font-gabarito), "Gabarito", var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-sans: var(--font-inter), "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Gambetta", var(--font-newsreader), "Newsreader", Georgia, serif;
+  --font-mono: var(--font-space-mono), "Space Mono", ui-monospace, Menlo, Consolas, monospace;
 
-  /* Raios do design system: selos/células 6 · campos 10 · cartões 18 · botões e selos em pílula (rounded-full).
-     Espaçamento: múltiplos de 4 px (escala padrão do Tailwind: 1 = 4 px). Contorno de 1 px no lugar de sombra. */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 18px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
 
-  --color-noite-50: #EEF1FA;
-  --color-noite-100: #D9DFF2;
-  --color-noite-200: #B3BEE4;
-  --color-noite-300: #8291CC;
-  --color-noite-400: #5263AE;
-  --color-noite-500: #33448F;
-  --color-noite-600: #22306F;
-  --color-noite-700: #172354;
-  --color-noite-800: #0D163B;
-  --color-noite-900: #060B2A;
-  --color-ceu-50: #F1F7FE;
-  --color-ceu-100: #DCEBFC;
-  --color-ceu-200: #BCD9F8;
-  --color-ceu-300: #9DC7F4;
-  --color-ceu-400: #7DB7F0;
-  --color-ceu-500: #4E97E3;
-  --color-ceu-600: #2D77CC;
-  --color-ceu-700: #2160A8;
-  --color-ceu-800: #1E4C82;
-  --color-ceu-900: #1A3A62;
-  --color-gelo-50: #F7F9FC;
-  --color-gelo-100: #EDF2F8;
-  --color-gelo-200: #DCE8F3;
-  --color-gelo-300: #C7D3E2;
-  --color-gelo-400: #A6B3C6;
-  --color-gelo-500: #7E8BA2;
-  --color-gelo-600: #5E6A82;
-  --color-gelo-700: #46516A;
-  --color-gelo-800: #2E3850;
-  --color-gelo-900: #1A2238;
-  --color-creme-50: #FFFDF8;
-  --color-creme-100: #FFF8E7;
-  --color-creme-200: #FDEFCB;
-  --color-creme-300: #F8E2A6;
-  --color-creme-400: #EFCF79;
-  --color-creme-500: #DDB54C;
-  --color-creme-600: #B58E2E;
-  --color-creme-700: #8A6A20;
-  --color-creme-800: #5F4916;
-  --color-creme-900: #3A2D0E;
-  --color-cobalto-50: #EFF4FF;
-  --color-cobalto-100: #DBE6FE;
-  --color-cobalto-200: #BFD3FE;
-  --color-cobalto-300: #93B4FD;
-  --color-cobalto-400: #6090FA;
-  --color-cobalto-500: #3B6EF6;
-  --color-cobalto-600: #2563EB;
-  --color-cobalto-700: #1D4ED8;
-  --color-cobalto-800: #1E40AF;
-  --color-cobalto-900: #1E3A8A;
-
-  /* Séries de gráfico */
-  --color-chart-1: #060B2A;
-  --color-chart-2: #2D77CC;
-  --color-chart-3: #7DB7F0;
-  --color-chart-4: #DDB54C;
-  --color-chart-5: #12A27A;
-  --color-chart-6: #A6B3C6;
+  /* Cores-base da marca */
+  --color-pine: #0B5A3E;
+  --color-moss: #8BBE67;
+  --color-graphite: #1F2826;
+  --color-fern: #079A2E;
+  --color-ember: #FF5F1F;
+  --color-cobalt: #3D3BE6;
+  --color-haze: #C6E6F4;
+  --color-cream: #FDEEDC;
 }
 
-/* Papéis semânticos: utilitários (bg-surface, text-fg, border-line, bg-ok-bg…) leem variáveis
-   que mudam por tema (claro/escuro) e no modo inventário (data-mode="inventory"). */
+/* Papéis semânticos (mudam por tema). Use sempre estes, nunca a cor-base direto. */
 @theme inline {
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
@@ -87,252 +34,108 @@
   --color-action: var(--action);
   --color-action-hover: var(--action-hover);
   --color-on-action: var(--on-action);
-  --color-accent: var(--accent);
-  --color-accent-soft: var(--accent-soft);
+  --color-signal: var(--signal);
+  --color-signal-soft: var(--signal-soft);
+  --color-signal-fg: var(--signal-fg);
   --color-link: var(--link);
   --color-focus: var(--focus);
-  --color-on-solid: var(--on-solid);
-  --color-ok-bg: var(--ok-bg);
-  --color-ok-fg: var(--ok-fg);
-  --color-ok-line: var(--ok-line);
-  --color-ok-solid: var(--ok-solid);
-  --color-warn-bg: var(--warn-bg);
-  --color-warn-fg: var(--warn-fg);
-  --color-warn-line: var(--warn-line);
-  --color-warn-solid: var(--warn-solid);
-  --color-crit-bg: var(--crit-bg);
-  --color-crit-fg: var(--crit-fg);
-  --color-crit-line: var(--crit-line);
-  --color-crit-solid: var(--crit-solid);
-  --color-info-bg: var(--info-bg);
-  --color-info-fg: var(--info-fg);
-  --color-info-line: var(--info-line);
-  --color-info-solid: var(--info-solid);
-  --color-prog-bg: var(--prog-bg);
-  --color-prog-fg: var(--prog-fg);
-  --color-prog-line: var(--prog-line);
-  --color-prog-solid: var(--prog-solid);
-  --color-neutral-bg: var(--neutral-bg);
-  --color-neutral-fg: var(--neutral-fg);
-  --color-neutral-line: var(--neutral-line);
-  --color-neutral-solid: var(--neutral-solid);
-  --color-series-1: var(--series-1);
-  /* trecho apagado dos gráficos no traço do símbolo (gelo-200 no claro, noite-600 no escuro) */
+  --color-route: var(--route);
   --color-chart-off: var(--chart-off);
+  --color-ok-bg: var(--ok-bg); --color-ok-fg: var(--ok-fg); --color-ok: var(--ok);
+  --color-warn-bg: var(--warn-bg); --color-warn-fg: var(--warn-fg); --color-warn: var(--warn);
+  --color-crit-bg: var(--crit-bg); --color-crit-fg: var(--crit-fg); --color-crit: var(--crit);
+  --color-transit-bg: var(--transit-bg); --color-transit-fg: var(--transit-fg); --color-transit: var(--transit);
+  --color-info-bg: var(--info-bg); --color-info-fg: var(--info-fg);
+  --color-neutral-bg: var(--neutral-bg); --color-neutral-fg: var(--neutral-fg); --color-neutral: var(--neutral);
 }
 
-:root,
-[data-theme="light"] {
-  --canvas: #F7F9FC;
-  --surface: #FFFFFF;
-  --subtle: #EDF2F8;
-  --line: #DCE8F3;
-  --line-strong: #C7D3E2;
-  --fg: #060B2A;
-  --fg-2: #46516A;
-  --muted: #5E6A82;
-  --action: #060B2A;
-  --action-hover: #172354;
-  --on-action: #FFF8E7;
-  --accent: #7DB7F0;
-  --accent-soft: #F1F7FE;
-  --link: #1D4ED8;
-  --focus: #2563EB;
-  --on-solid: #FFFFFF;
-  --ok-bg: #E8F7F1; --ok-fg: #0B6B4F; --ok-line: #B4E5D2; --ok-solid: #12A27A;
-  --warn-bg: #FFF6DB; --warn-fg: #7A5300; --warn-line: #F5D98A; --warn-solid: #E0A100;
-  --crit-bg: #FDECEC; --crit-fg: #A3202A; --crit-line: #F5BDC0; --crit-solid: #E03A45;
-  --info-bg: #F1F7FE; --info-fg: #1E4C82; --info-line: #BCD9F8; --info-solid: #4E97E3;
-  --prog-bg: #EFF4FF; --prog-fg: #1E40AF; --prog-line: #BFD3FE; --prog-solid: #2563EB;
-  --neutral-bg: #EDF2F8; --neutral-fg: #2E3850; --neutral-line: #C7D3E2; --neutral-solid: #7E8BA2;
-  --series-1: #060B2A;
-  --chart-off: #DCE8F3;
-  color-scheme: light;
+:root {
+  --canvas: #FBF1E4; --surface: #FFFAF3; --subtle: #F4E8D8; --line: #EADCC8; --line-strong: #D8C6AE;
+  --fg: #1F2826; --fg-2: #3F4A47; --muted: #66716D;
+  --action: #0B5A3E; --action-hover: #0E6E4C; --on-action: #FDEEDC;
+  --signal: #FF5F1F; --signal-soft: #FFE3D4; --signal-fg: #B8400F;
+  --link: #3D3BE6; --focus: #3D3BE6; --route: #8BBE67; --chart-off: #EFE3D2;
+  --ok-bg: #DCF0DF; --ok-fg: #0A6B26; --ok: #079A2E;
+  --warn-bg: #FBEBC9; --warn-fg: #80580A; --warn: #D99A0B;
+  --crit-bg: #FFE0D3; --crit-fg: #A8340A; --crit: #FF5F1F;
+  --transit-bg: #E4E3FC; --transit-fg: #2E2CB8; --transit: #3D3BE6;
+  --info-bg: #E2F2FA; --info-fg: #1D5670;
+  --neutral-bg: #EEE6DA; --neutral-fg: #4F5955; --neutral: #8A938F;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --canvas: #060B2A;
-    --surface: #0D163B;
-    --subtle: #172354;
-    --line: #22306F;
-    --line-strong: #33448F;
-    --fg: #EEF1FA;
-    --fg-2: #A6B3C6;
-    --muted: #8291CC;
-    --action: #7DB7F0;
-    --action-hover: #9DC7F4;
-    --on-action: #060B2A;
-    --accent: #FFF8E7;
-    --accent-soft: #111C4A;
-    --link: #9DC7F4;
-    --focus: #9DC7F4;
-    --on-solid: #060B2A;
-    --ok-bg: #0B3A31; --ok-fg: #7FE0BF; --ok-line: color-mix(in oklab, #2CC593 40%, #0B3A31); --ok-solid: #2CC593;
-    --warn-bg: #3A2C05; --warn-fg: #F8D57A; --warn-line: color-mix(in oklab, #E9B53A 40%, #3A2C05); --warn-solid: #E9B53A;
-    --crit-bg: #3D0F15; --crit-fg: #FFA3A9; --crit-line: color-mix(in oklab, #F2545E 40%, #3D0F15); --crit-solid: #F2545E;
-    --info-bg: #0D2445; --info-fg: #9DC7F4; --info-line: color-mix(in oklab, #7DB7F0 40%, #0D2445); --info-solid: #7DB7F0;
-    --prog-bg: #111C4A; --prog-fg: #A9C1FF; --prog-line: color-mix(in oklab, #6090FA 40%, #111C4A); --prog-solid: #6090FA;
-    --neutral-bg: #1A2238; --neutral-fg: #C7D3E2; --neutral-line: color-mix(in oklab, #A6B3C6 40%, #1A2238); --neutral-solid: #A6B3C6;
+    --canvas: #161D1B; --surface: #1F2826; --subtle: #27322F; --line: #2F3B38; --line-strong: #3F4D49;
+    --fg: #FDEEDC; --fg-2: #D3CABC; --muted: #9FA8A3;
+    --action: #8BBE67; --action-hover: #A0CC80; --on-action: #1F2826;
+    --signal: #FF7A45; --signal-soft: #3E2216; --signal-fg: #FFAE8A;
+    --link: #A9A8FA; --focus: #A9A8FA; --route: #8BBE67; --chart-off: #2F3B38;
+    --ok-bg: #12331C; --ok-fg: #8BDB98; --ok: #3CC25A;
+    --warn-bg: #3A2D0E; --warn-fg: #F3CE72; --warn: #E9B53A;
+    --crit-bg: #3E2216; --crit-fg: #FFAE8A; --crit: #FF7A45;
+    --transit-bg: #25244F; --transit-fg: #B5B4FA; --transit: #8E8CF7;
+    --info-bg: #17323F; --info-fg: #C6E6F4;
+    --neutral-bg: #2A3431; --neutral-fg: #D3CABC; --neutral: #9FA8A3;
     color-scheme: dark;
-    --series-1: #EEF1FA;
-    --chart-off: #22306F;
   }
 }
-:root[data-theme="dark"],
-[data-theme="dark"] {
-  --canvas: #060B2A;
-  --surface: #0D163B;
-  --subtle: #172354;
-  --line: #22306F;
-  --line-strong: #33448F;
-  --fg: #EEF1FA;
-  --fg-2: #A6B3C6;
-  --muted: #8291CC;
-  --action: #7DB7F0;
-  --action-hover: #9DC7F4;
-  --on-action: #060B2A;
-  --accent: #FFF8E7;
-  --accent-soft: #111C4A;
-  --link: #9DC7F4;
-  --focus: #9DC7F4;
-  --on-solid: #060B2A;
-  --ok-bg: #0B3A31; --ok-fg: #7FE0BF; --ok-line: color-mix(in oklab, #2CC593 40%, #0B3A31); --ok-solid: #2CC593;
-  --warn-bg: #3A2C05; --warn-fg: #F8D57A; --warn-line: color-mix(in oklab, #E9B53A 40%, #3A2C05); --warn-solid: #E9B53A;
-  --crit-bg: #3D0F15; --crit-fg: #FFA3A9; --crit-line: color-mix(in oklab, #F2545E 40%, #3D0F15); --crit-solid: #F2545E;
-  --info-bg: #0D2445; --info-fg: #9DC7F4; --info-line: color-mix(in oklab, #7DB7F0 40%, #0D2445); --info-solid: #7DB7F0;
-  --prog-bg: #111C4A; --prog-fg: #A9C1FF; --prog-line: color-mix(in oklab, #6090FA 40%, #111C4A); --prog-solid: #6090FA;
-  --neutral-bg: #1A2238; --neutral-fg: #C7D3E2; --neutral-line: color-mix(in oklab, #A6B3C6 40%, #1A2238); --neutral-solid: #A6B3C6;
+:root[data-theme="dark"] {
+  --canvas: #161D1B; --surface: #1F2826; --subtle: #27322F; --line: #2F3B38; --line-strong: #3F4D49;
+  --fg: #FDEEDC; --fg-2: #D3CABC; --muted: #9FA8A3;
+  --action: #8BBE67; --action-hover: #A0CC80; --on-action: #1F2826;
+  --signal: #FF7A45; --signal-soft: #3E2216; --signal-fg: #FFAE8A;
+  --link: #A9A8FA; --focus: #A9A8FA; --route: #8BBE67; --chart-off: #2F3B38;
+  --ok-bg: #12331C; --ok-fg: #8BDB98; --ok: #3CC25A;
+  --warn-bg: #3A2D0E; --warn-fg: #F3CE72; --warn: #E9B53A;
+  --crit-bg: #3E2216; --crit-fg: #FFAE8A; --crit: #FF7A45;
+  --transit-bg: #25244F; --transit-fg: #B5B4FA; --transit: #8E8CF7;
+  --info-bg: #17323F; --info-fg: #C6E6F4;
+  --neutral-bg: #2A3431; --neutral-fg: #D3CABC; --neutral: #9FA8A3;
   color-scheme: dark;
-  --series-1: #EEF1FA;
-  --chart-off: #22306F;
-}
-/* Modo inventário: telas de contagem, escuro de alto contraste com destaque creme. */
-[data-mode="inventory"] {
-  --canvas: #03061A;
-  --surface: #0D163B;
-  --subtle: #172354;
-  --line: #172354;
-  --line-strong: #22306F;
-  --fg: #FFF8E7;
-  --fg-2: #9DC7F4;
-  --muted: #8291CC;
-  --action: #FFF8E7;
-  --action-hover: #FDEFCB;
-  --on-action: #060B2A;
-  --accent: #7DB7F0;
-  --accent-soft: #111C4A;
-  --link: #9DC7F4;
-  --focus: #F8E2A6;
-  --on-solid: #060B2A;
-  --ok-bg: #0B3A31; --ok-fg: #7FE0BF; --ok-line: color-mix(in oklab, #2CC593 40%, #0B3A31); --ok-solid: #2CC593;
-  --warn-bg: #3A2C05; --warn-fg: #F8D57A; --warn-line: color-mix(in oklab, #E9B53A 40%, #3A2C05); --warn-solid: #E9B53A;
-  --crit-bg: #3D0F15; --crit-fg: #FFA3A9; --crit-line: color-mix(in oklab, #F2545E 40%, #3D0F15); --crit-solid: #F2545E;
-  --info-bg: #0D2445; --info-fg: #9DC7F4; --info-line: color-mix(in oklab, #7DB7F0 40%, #0D2445); --info-solid: #7DB7F0;
-  --prog-bg: #111C4A; --prog-fg: #A9C1FF; --prog-line: color-mix(in oklab, #6090FA 40%, #111C4A); --prog-solid: #6090FA;
-  --neutral-bg: #1A2238; --neutral-fg: #C7D3E2; --neutral-line: color-mix(in oklab, #A6B3C6 40%, #1A2238); --neutral-solid: #A6B3C6;
-  color-scheme: dark;
-  --series-1: #FFF8E7;
-  --chart-off: #22306F;
-  background-color: var(--canvas);
-  color: var(--fg);
 }
 
 @layer base {
-  html {
-    -webkit-text-size-adjust: 100%;
-  }
   body {
     @apply bg-canvas text-fg antialiased;
-    font-feature-settings: "tnum" 1;
+    font-size: 14px;
     font-variant-numeric: tabular-nums;
   }
-  h1,
-  h2,
-  h3 {
+  h1, h2, h3 {
     font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
   }
-  table,
-  .font-mono {
-    font-variant-numeric: tabular-nums;
-  }
-  :focus-visible {
-    @apply outline-2 outline-offset-2 outline-focus;
-  }
-  /* Safari no iPhone dá aos campos de data e hora uma largura mínima própria e
-     altura maior quando vazios: dois campos lado a lado se sobrepunham. */
-  input[type="date"],
-  input[type="time"],
-  input[type="datetime-local"],
-  input[type="month"] {
-    -webkit-appearance: none;
-    appearance: none;
-    min-width: 0;
-    max-width: 100%;
-  }
-  input[type="date"]::-webkit-date-and-time-value,
-  input[type="time"]::-webkit-date-and-time-value,
-  input[type="datetime-local"]::-webkit-date-and-time-value {
-    min-height: 1.25rem;
-    text-align: left;
+  :focus-visible { @apply outline-2 outline-offset-2 outline-focus; }
+  /* Textura granulada da marca: leve, fixa, nunca sobre impressos. */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+    opacity: 0.06;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 }
 
 @layer components {
   .input {
     @apply block w-full rounded-md border border-line-strong bg-surface px-3 py-2 text-sm text-fg
-      placeholder:text-muted focus:border-focus focus:ring-2 focus:ring-focus/20 focus:outline-none
-      disabled:cursor-not-allowed disabled:bg-subtle disabled:text-muted;
+      placeholder:text-muted focus:border-focus focus:outline-none;
   }
-  .label {
-    @apply mb-1 block text-xs font-medium text-fg-2;
-  }
-  .table-base {
-    @apply w-full border-collapse text-sm;
-  }
-  .table-base th {
-    @apply border-b border-line bg-canvas px-3 py-2 text-left text-xs font-semibold tracking-wide whitespace-nowrap text-muted uppercase;
-  }
-  .table-base td {
-    @apply border-b border-line px-3 py-2.5 align-middle text-fg-2;
-  }
-  .table-base tbody tr:hover td {
-    @apply bg-subtle/60;
-  }
-  [data-mode="inventory"] .table-base tbody tr:hover td {
-    background-color: color-mix(in oklab, var(--accent) 14%, transparent);
-  }
-  .num {
-    @apply text-right tabular-nums;
-  }
-  /* Códigos (endereço, SKU, lote, documento) não quebram no meio dentro de tabelas:
-     no celular a tabela rola de lado, e o código continua legível numa linha só. */
-  .table-base td .font-mono,
-  .table-base td.font-mono,
-  .table-base td .code {
-    white-space: nowrap;
-  }
-  .code {
-    @apply font-mono text-xs text-fg-2;
-  }
-  .link {
-    @apply font-medium text-link hover:underline;
-  }
+  .label { @apply mb-1 block text-xs font-medium text-fg-2; }
+  .eyebrow { @apply font-mono text-[11px] text-muted; }
+  .table-base { @apply w-full border-collapse text-sm; }
+  .table-base th { @apply border-b border-line bg-canvas px-3 py-2 text-left text-[11px] font-semibold tracking-wider whitespace-nowrap text-muted uppercase; }
+  .table-base td { @apply border-b border-line px-3 py-2.5 align-middle whitespace-nowrap text-fg-2; }
+  .table-base tbody tr:hover td { @apply bg-subtle; }
+  .num { @apply text-right tabular-nums; }
+  .code { @apply font-mono text-xs text-fg; }
+  .link { @apply font-medium text-link hover:underline; }
 }
 
-
-/* -----------------------------------------------------------------------------
- * PLEIONE · acento da marca de transporte (proposta). Céu continua sendo ação;
- * plêiade só aparece no símbolo, no ícone do app e na linha da rota.
- * -------------------------------------------------------------------------- */
-@theme {
-  --color-pleiade-100: #ECEBFE;
-  --color-pleiade-300: #C6C3FA;
-  --color-pleiade-400: #A9A6F5;
-  --color-pleiade-600: #6C66D9;
-  --color-pleiade-800: #2F2A78;
-}
-
-@keyframes pleione-move { from { transform: translateX(-4px); } to { transform: translateX(4px); } }
+@keyframes pleione-pulse { 50% { box-shadow: 0 0 0 9px transparent; } }
 @media (prefers-reduced-motion: no-preference) {
-  .pleione-moving { animation: pleione-move 1.6s ease-in-out infinite alternate; }
+  .stop-now { animation: pleione-pulse 2s ease-in-out infinite; }
 }
