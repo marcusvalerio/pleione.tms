@@ -195,3 +195,7 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .pleione-map .leaflet-tile-pane { filter: grayscale(1) invert(0.92) hue-rotate(180deg) brightness(0.85) contrast(0.9); }
 }
+@keyframes pleione-ticker { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: no-preference) {
+  .ticker { animation: pleione-ticker 38s linear infinite; }
+}
