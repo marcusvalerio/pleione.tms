@@ -2,7 +2,7 @@
 
 Gestão de transportes do ecossistema **ASTRAEUS**: o ATLAS (ERP) planeja, o ORION (WMS) separa e o PLEIONE (TMS) leva até o cliente.
 
-> Versão 0.1. Todas as telas usam dados de demonstração em memória (`src/lib/demo-data.ts`). Ainda não há banco de dados, login nem integração ligada.
+> Versão 0.2. Os dados ficam no **Neon** (Postgres, projeto `pleione-tms`, região São Paulo). Sem `DATABASE_URL`, o app usa os dados de demonstração em memória (`src/lib/demo-data.ts`). Ainda não há login nem integração com o ORION ligada.
 
 ## Telas
 
@@ -22,8 +22,18 @@ Gestão de transportes do ecossistema **ASTRAEUS**: o ATLAS (ERP) planeja, o ORI
 
 ```bash
 npm install
+cp .env.example .env.local   # cole a DATABASE_URL do Neon
+npm run db:migrate           # aplica db/migrations/*.sql
+npm run db:seed              # dados de demonstração (só se o banco estiver vazio)
 npm run dev
 ```
+
+## Banco (Neon)
+
+- Esquema `tms`: transportadoras, veículos, motoristas, tabelas de frete, pedidos vindos do ORION (`shipments`), cargas (`loads`, com o traçado da rota em `route` jsonb), paradas, ocorrências e estatística diária de entregas.
+- Migrações em `db/migrations/`, controladas pela tabela `public.schema_migrations`.
+- Leitura: `src/server/store.ts`. Gravação de carga: `POST /api/cargas`. O servidor recalcula a rota pela estrada, grava carga, paradas e traçado numa transação e marca os pedidos como "em carga".
+- Em produção (Vercel), defina `DATABASE_URL` nas variáveis de ambiente do projeto.
 
 `npm run check` roda lint, tipos e testes (`src/lib/freight.test.ts`).
 

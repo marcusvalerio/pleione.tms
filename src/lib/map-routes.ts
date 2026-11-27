@@ -22,8 +22,8 @@ export function loadToMapRoute(load: Load, i = 0): MapRoute {
   const nextIdx = load.stops.findIndex((s) => s.status !== "delivered");
   const state = (s: Load["stops"][number], idx: number): MapPointState =>
     s.status === "delivered" ? "done" : s.status === "incident" ? "incident" : s.status === "at_risk" ? "late" : idx === nextIdx ? "next" : "pending";
-  const geo = routeGeometry(load.code);
-  const pos = VEHICLE_POSITIONS[load.code];
+  const geo = load.route ?? routeGeometry(load.code);
+  const pos = load.position ?? VEHICLE_POSITIONS[load.code];
   const driver = driverById(load.driverId);
 
   // parada = ponto do traçado (já encaixado na via); sem traçado, usa a coordenada da cidade

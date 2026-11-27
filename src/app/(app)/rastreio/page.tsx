@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { Card, CardBody, CardHeader, PageHeader, StatusBadge } from "@/components/ui";
 import { RouteDots, RouteLine, RouteStop } from "@/components/route";
-import { INCIDENTS, LOADS, VEHICLE_POSITIONS, driverById } from "@/lib/demo-data";
+import { getStore } from "@/server/store";
 import { RouteMap } from "@/components/map/route-map";
 import { loadToMapRoute } from "@/lib/map-routes";
 
 export const metadata = { title: "Rastreio e ocorrências" };
 
-export default function Rastreio() {
+export default async function Rastreio() {
+  const { INCIDENTS, LOADS, driverById } = await getStore();
   const active = LOADS.filter((l) => ["in_transit", "at_risk", "incident"].includes(l.status));
   return (
     <>
@@ -57,9 +58,9 @@ export default function Rastreio() {
                 <CardBody className="grid gap-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <RouteDots done={done} total={l.stops.length} alert={l.status !== "in_transit"} />
-                    {VEHICLE_POSITIONS[l.code] ? (
+                    {l.position ? (
                       <span className="font-mono text-[11px] text-muted">
-                        {VEHICLE_POSITIONS[l.code].speed} km/h · sinal {VEHICLE_POSITIONS[l.code].when}
+                        {l.position.speed} km/h · sinal {l.position.when}
                       </span>
                     ) : null}
                   </div>

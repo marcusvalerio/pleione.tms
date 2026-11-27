@@ -10,12 +10,15 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "check": "npm run lint && npm run typecheck && npm run test"
+    "check": "npm run lint && npm run typecheck && npm run test",
+    "db:migrate": "tsx --env-file-if-exists=.env.local scripts/db.ts migrate",
+    "db:seed": "tsx --env-file-if-exists=.env.local scripts/db.ts seed"
   },
   "engines": {
     "node": ">=20.9"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.2.2",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.54.0",
     "next": "^16.4.6",
@@ -34,6 +37,7 @@
     "eslint-config-next": "^16.4.6",
     "postcss": "^8.5.29",
     "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "vitest": "^3.2.7"
   }

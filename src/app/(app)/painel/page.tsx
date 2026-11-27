@@ -2,12 +2,13 @@ import Link from "next/link";
 import { ArrowRight, CircleAlert, Route, TriangleAlert } from "lucide-react";
 import { Badge, ButtonLink, Card, CardBody, CardHeader, Kpi, PageHeader, StatusBadge } from "@/components/ui";
 import { RouteDots } from "@/components/route";
-import { DELIVERIES_14D, INCIDENTS, LOADS, SHIPMENTS, VEHICLES, carrierName } from "@/lib/demo-data";
+import { getStore } from "@/server/store";
 import { brl, num } from "@/lib/format";
 
 export const metadata = { title: "Torre de controle" };
 
-export default function Painel() {
+export default async function Painel() {
+  const { DELIVERIES_14D, INCIDENTS, LOADS, SHIPMENTS, VEHICLES, carrierName } = await getStore();
   const inTransit = LOADS.filter((l) => ["in_transit", "at_risk", "incident"].includes(l.status));
   const stopsOut = inTransit.reduce((s, l) => s + l.stops.filter((x) => x.status !== "delivered").length, 0);
   const atRisk = LOADS.flatMap((l) => l.stops).filter((s) => s.status === "at_risk").length;
@@ -106,7 +107,7 @@ export default function Painel() {
         <Card>
           <CardHeader title="Entregas por dia" description="No prazo e com atraso, últimos 14 dias." />
           <CardBody>
-            <DeliveriesChart />
+            <DeliveriesChart data={DELIVERIES_14D} />
           </CardBody>
         </Card>
       </div>
@@ -182,7 +183,7 @@ function Spark({ data }: { data: number[] }) {
   );
 }
 
-function DeliveriesChart() {
+function DeliveriesChart({ data: DELIVERIES_14D }: { data: { day: string; ok: number; late: number }[] }) {
   const W = 300;
   const H = 160;
   const pad = { l: 22, b: 18, t: 8 };

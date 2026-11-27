@@ -1,11 +1,12 @@
 import { Card, CardHeader, PageHeader, StatusBadge } from "@/components/ui";
-import { SHIPMENTS } from "@/lib/demo-data";
+import { getStore } from "@/server/store";
 import { brl, fmtDate, num } from "@/lib/format";
 import { LoadBuilder } from "./load-builder";
 
 export const metadata = { title: "Embarques do ORION" };
 
-export default function Embarques() {
+export default async function Embarques() {
+  const { SHIPMENTS, VEHICLES } = await getStore();
   const open = SHIPMENTS.filter((s) => s.status !== "assigned");
   return (
     <>
@@ -18,7 +19,7 @@ export default function Embarques() {
         }
         description="Pedidos separados e conferidos no ORION. Marque os que vão juntos, escolha o veículo e veja a ocupação antes de criar a carga."
       />
-      <LoadBuilder shipments={open} />
+      <LoadBuilder shipments={open} vehicles={VEHICLES} />
       <Card className="mt-5">
         <CardHeader title="Já em carga" />
         <div className="overflow-x-auto">

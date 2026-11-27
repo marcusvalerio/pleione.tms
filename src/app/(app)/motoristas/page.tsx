@@ -1,10 +1,11 @@
 import { Card, PageHeader, StatusBadge } from "@/components/ui";
-import { DRIVERS, carrierName } from "@/lib/demo-data";
+import { getStore } from "@/server/store";
 import { fmtDate } from "@/lib/format";
 
 export const metadata = { title: "Motoristas" };
 
-export default function Motoristas() {
+export default async function Motoristas() {
+  const { DRIVERS, carrierName } = await getStore();
   return (
     <>
       <PageHeader eyebrow="cadastros" title="Motoristas" description="Habilitação, validade da CNH e situação de jornada." />

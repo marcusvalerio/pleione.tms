@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { ArrowDown, ArrowUp, CheckCircle2, MapPin, PackagePlus, Plus, Sparkles, Trash2 } from "lucide-react";
 import { Badge, Button, Card, CardBody, CardHeader, cn } from "@/components/ui";
 import { RouteMap, type MapPointState, type MapRoute } from "@/components/map/route-map";
@@ -45,7 +46,9 @@ export function Planner({ shipments }: { shipments: Shipment[] }) {
   const [mode, setMode] = useState<"optimize" | "keep" | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<{ msg: string; missing?: string[] } | null>(null);
-  const [validated, setValidated] = useState(false);
+  const [validated, setValidated] = useState<string | false>(false);
+  const [saving, setSaving] = useState(false);
+  const router = useRouter();
   const [form, setForm] = useState({ customer: "", address: "", from: "08:00", to: "17:00" });
 
   // Paradas na ordem do resultado (ou como estão na lista, antes de roteirizar)
@@ -117,6 +120,42 @@ export function Planner({ shipments }: { shipments: Shipment[] }) {
       },
     ]);
     setForm({ customer: "", address: "", from: "08:00", to: "17:00" });
+  }
+
+  /** Grava a carga no banco com a ordem que o usuário conferiu. */
+  async function validate() {
+    if (!ordered) return;
+    setSaving(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/cargas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          departure,
+          optimize: false,
+          stops: ordered.map((o) => ({
+            shipment: o.stop.source === "orion" ? o.stop.ref : undefined,
+            customer: o.stop.customer,
+            address: o.stop.address,
+            window: o.stop.window,
+            serviceMin: o.stop.serviceMin,
+            at: o.geo.at,
+          })),
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        setError({ msg: json.error ?? "Não foi possível criar a carga." });
+        return;
+      }
+      setValidated(json.code);
+      router.refresh();
+    } catch {
+      setError({ msg: "Sem conexão com o servidor. Tente de novo." });
+    } finally {
+      setSaving(false);
+    }
   }
 
   const available = shipments.filter((s) => !stops.some((p) => p.id === s.order));
@@ -347,14 +386,18 @@ export function Planner({ shipments }: { shipments: Shipment[] }) {
               </ol>
               <CardBody className="flex flex-wrap items-center justify-between gap-3 border-t border-line">
                 <p className="text-xs text-muted">Conferiu a ordem, os horários e os pinos? Validar cria a carga e pede a janela de doca ao ORION.</p>
-                <Button variant="signal" onClick={() => setValidated(true)} disabled={loading || validated}>
+                <Button variant="signal" onClick={validate} disabled={loading || saving || !!validated}>
                   <CheckCircle2 className="size-4" aria-hidden />
-                  Validar e criar carga
+                  {saving ? "Criando a carga…" : "Validar e criar carga"}
                 </Button>
               </CardBody>
               {validated ? (
                 <p role="status" className="border-t border-line bg-ok-bg px-4 py-3 text-sm text-ok-fg">
-                  Carga <span className="code text-ok-fg">CG-02423</span> criada com {ordered.length} paradas, {num(result.route.km)} km. (Demonstração: ainda não grava no banco.)
+                  Carga{" "}
+                  <a href={`/cargas/${validated}`} className="code font-semibold text-ok-fg underline">
+                    {validated}
+                  </a>{" "}
+                  criada com {ordered.length} paradas, {num(result.route.km)} km. Os pedidos do ORION saíram da lista de prontos.
                 </p>
               ) : null}
             </Card>

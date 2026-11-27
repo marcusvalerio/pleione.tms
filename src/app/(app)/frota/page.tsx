@@ -1,10 +1,11 @@
 import { Card, PageHeader, Plate, StatusBadge } from "@/components/ui";
-import { VEHICLES, carrierName } from "@/lib/demo-data";
+import { getStore } from "@/server/store";
 import { fmtDate, num } from "@/lib/format";
 
 export const metadata = { title: "Frota" };
 
-export default function Frota() {
+export default async function Frota() {
+  const { VEHICLES, carrierName } = await getStore();
   return (
     <>
       <PageHeader eyebrow="cadastros" title="Frota" description="Veículos próprios e de terceiros habilitados, com capacidade e próxima manutenção." />

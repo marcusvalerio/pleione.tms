@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Card, EmptyState, PageHeader, StatusBadge, buttonClass, cn } from "@/components/ui";
 import { RouteDots } from "@/components/route";
-import { LOADS, carrierName, driverById } from "@/lib/demo-data";
+import { getStore } from "@/server/store";
 import { STATUS } from "@/lib/labels";
 import { brl, num } from "@/lib/format";
 import { routeGeometry } from "@/lib/map-routes";
@@ -9,6 +9,7 @@ import { routeGeometry } from "@/lib/map-routes";
 export const metadata = { title: "Cargas" };
 
 export default async function Cargas({ searchParams }: { searchParams: Promise<{ status?: string; q?: string }> }) {
+  const { LOADS, carrierName, driverById } = await getStore();
   const { status, q } = await searchParams;
   const term = q?.trim().toLowerCase();
   const rows = LOADS.filter((l) => !status || l.status === status).filter(
@@ -77,7 +78,7 @@ export default async function Cargas({ searchParams }: { searchParams: Promise<{
                     <td>
                       <span className="text-fg">{l.destination}</span>
                       <span className="block text-xs text-muted">
-                        {num(routeGeometry(l.code)?.km ?? l.km)} km · saída {l.departure} · doca {l.dock}
+                        {num(l.route?.km ?? routeGeometry(l.code)?.km ?? l.km)} km · saída {l.departure} · doca {l.dock}
                       </span>
                     </td>
                     <td className="code">{l.vehiclePlate ?? "—"}</td>

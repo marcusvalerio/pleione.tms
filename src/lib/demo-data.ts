@@ -100,6 +100,10 @@ export interface Load {
   freight: number;
   docs: { cte: number; mdfe: string | null; ciot: string | null; toll: number | null; insurance: boolean };
   stops: Stop[];
+  /** Traçado pela estrada (vem do banco). */
+  route?: { coords: [number, number][]; stopIdx: number[]; legs: { km: number; min: number }[]; km: number; min: number } | null;
+  /** Última posição do veículo (vem do banco). */
+  position?: { leg: number; progress: number; when: string; speed: number } | null;
 }
 
 export const LOADS: Load[] = [

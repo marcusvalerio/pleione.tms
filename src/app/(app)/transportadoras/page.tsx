@@ -1,10 +1,11 @@
 import { Badge, Card, PageHeader } from "@/components/ui";
-import { CARRIERS } from "@/lib/demo-data";
+import { getStore } from "@/server/store";
 import { brl, num } from "@/lib/format";
 
 export const metadata = { title: "Transportadoras" };
 
-export default function Transportadoras() {
+export default async function Transportadoras() {
+  const { CARRIERS } = await getStore();
   return (
     <>
       <PageHeader eyebrow="cadastros" title="Transportadoras" description="Frota própria e terceiros, com nível de serviço e custo dos últimos 30 dias." />

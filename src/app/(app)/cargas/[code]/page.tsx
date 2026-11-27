@@ -1,14 +1,10 @@
 import { notFound } from "next/navigation";
 import { Badge, ButtonLink, Capacity, Card, CardBody, CardHeader, PageHeader, Plate, StatusBadge } from "@/components/ui";
 import { RouteLine, RouteStop, type StopState } from "@/components/route";
-import { INCIDENTS, LOADS, carrierName, driverById, loadByCode, vehicleByPlate } from "@/lib/demo-data";
+import { getStore } from "@/server/store";
 import { brl, fmtDate, num } from "@/lib/format";
 import { RouteMap } from "@/components/map/route-map";
 import { loadToMapRoute, routeGeometry } from "@/lib/map-routes";
-
-export function generateStaticParams() {
-  return LOADS.map((l) => ({ code: l.code }));
-}
 
 export async function generateMetadata({ params }: { params: Promise<{ code: string }> }) {
   return { title: (await params).code };
@@ -18,6 +14,7 @@ const stateOf = (s: string, isNext: boolean): StopState =>
   s === "delivered" ? "done" : s === "incident" ? "incident" : s === "at_risk" ? "late" : isNext ? "now" : "next";
 
 export default async function Carga({ params }: { params: Promise<{ code: string }> }) {
+  const { INCIDENTS, carrierName, driverById, loadByCode, vehicleByPlate } = await getStore();
   const load = loadByCode((await params).code);
   if (!load) notFound();
   const vehicle = vehicleByPlate(load.vehiclePlate);
@@ -25,7 +22,7 @@ export default async function Carga({ params }: { params: Promise<{ code: string
   const nextIdx = load.stops.findIndex((s) => s.status !== "delivered");
   const incidents = INCIDENTS.filter((i) => i.load === load.code);
   const insuranceLimit = 450000;
-  const geo = routeGeometry(load.code);
+  const geo = load.route ?? routeGeometry(load.code);
   const km = geo?.km ?? load.km;
   const hm = (min: number) => `${Math.floor(min / 60)}h${String(min % 60).padStart(2, "0")}`;
 

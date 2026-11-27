@@ -1,5 +1,5 @@
 import { Card, CardHeader, PageHeader } from "@/components/ui";
-import { CARRIERS, FREIGHT_TABLES } from "@/lib/demo-data";
+import { getStore } from "@/server/store";
 import { brl } from "@/lib/format";
 import { Simulator } from "./simulator";
 
@@ -7,7 +7,8 @@ export const metadata = { title: "Tabelas e simulador de frete" };
 
 const pct = (f: number) => `${(f * 100).toLocaleString("pt-BR", { maximumFractionDigits: 2 })}%`;
 
-export default function Fretes() {
+export default async function Fretes() {
+  const { CARRIERS, FREIGHT_TABLES } = await getStore();
   return (
     <>
       <PageHeader

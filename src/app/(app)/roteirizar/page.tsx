@@ -1,10 +1,11 @@
 import { PageHeader } from "@/components/ui";
-import { SHIPMENTS } from "@/lib/demo-data";
+import { getStore } from "@/server/store";
 import { Planner } from "./planner";
 
 export const metadata = { title: "Roteirizar" };
 
-export default function Roteirizar() {
+export default async function Roteirizar() {
+  const { SHIPMENTS } = await getStore();
   return (
     <>
       <PageHeader
@@ -16,7 +17,7 @@ export default function Roteirizar() {
         }
         description="Traga entregas do ORION ou digite endereços. O sistema monta a melhor sequência pela estrada, prevê a chegada em cada cliente e você só confere e valida."
       />
-      <Planner shipments={SHIPMENTS.filter((s) => s.status !== "assigned")} />
+      <Planner shipments={SHIPMENTS.filter((s) => s.status === "ready")} />
     </>
   );
 }
